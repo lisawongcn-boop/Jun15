@@ -173,6 +173,7 @@ explain explanation describe summarize summarise rewrite draft outline
 brainstorm suggest recommend advice compare choose decide understand learn
 teach guide tip tips idea ideas option options approach step steps walk
 quick simple easy hard difficult wondering curious
+yet http https www com org net href link links
 """.split())
 
 TOKEN_RE = re.compile(r"[a-z][a-z0-9+#.\-']{1,}")
@@ -309,9 +310,26 @@ def build_vectors(convs):
 
 MERGE_THRESHOLD = 0.30      # cosine needed to join two groups
 ATTACH_THRESHOLD = 0.18     # looser bar for pulling a leftover into a group
-CONSOLIDATE_RATIO = 0.62    # second pass runs at this fraction of the threshold
+CONSOLIDATE_RATIO = 0.70    # second pass runs at this fraction of the threshold
+MAX_GROUP_FRACTION = 0.10   # no topic may hold more than this share of the archive
+MAX_GROUP_CEILING = 20      # ...nor more than this many, however large the archive
+MIN_GROUP_CEILING = 8       # ...nor fewer than this, however small
 TOP_TERMS_INDEXED = 40      # terms per centroid used for candidate lookup
 NEIGHBOURS_PER_CLUSTER = 20
+
+
+def default_cap(total):
+    """Largest a topic may grow.
+
+    An unbounded centroid-linkage run chains loosely-related groups into one
+    blob: on a real archive the top group swallowed a fifth of it and mixed
+    unrelated subjects. Capping the size stops the chain, and a group larger
+    than a couple of dozen conversations is not a browsable unit anyway.
+    """
+    return max(
+        MIN_GROUP_CEILING,
+        min(MAX_GROUP_CEILING, int(total * MAX_GROUP_FRACTION)),
+    )
 
 
 def cosine(a, b):
@@ -342,7 +360,7 @@ def cluster(vectors, threshold=MERGE_THRESHOLD, size_cap=None, weights=None):
     if weights is None:
         weights = [1] * n
     if size_cap is None:
-        size_cap = max(6, int(sum(weights) * 0.25))
+        size_cap = default_cap(sum(weights))
 
     centroids = {i: vectors[i] for i in range(n)}
     members = {i: [i] for i in range(n)}
@@ -409,7 +427,7 @@ def group_centroid(indices, vectors):
     return normalise_vec(combined)
 
 
-def consolidate(groups, vectors, threshold):
+def consolidate(groups, vectors, threshold, size_cap=None):
     """Rejoin topic fragments that split on wording but share a subject.
 
     Clustering conversations directly stops at the merge threshold, which leaves
@@ -423,7 +441,9 @@ def consolidate(groups, vectors, threshold):
         return groups
     centroids = [group_centroid(g, vectors) for g in groups]
     weights = [len(g) for g in groups]
-    bundles = cluster(centroids, threshold=threshold, weights=weights)
+    bundles = cluster(
+        centroids, threshold=threshold, size_cap=size_cap, weights=weights
+    )
 
     merged = []
     for bundle in bundles:
@@ -434,19 +454,23 @@ def consolidate(groups, vectors, threshold):
     return merged
 
 
-def attach_leftovers(groups, vectors, threshold=ATTACH_THRESHOLD):
+def attach_leftovers(groups, vectors, threshold=ATTACH_THRESHOLD, size_cap=None):
     """Pull one-off conversations into the closest group when they clearly belong."""
     grouped = [g for g in groups if len(g) > 1]
     singles = [g[0] for g in groups if len(g) == 1]
     if not grouped or not singles:
         return groups
 
+    if size_cap is None:
+        size_cap = default_cap(sum(len(g) for g in groups))
     centroids = [group_centroid(g, vectors) for g in grouped]
 
     still_alone = []
     for idx in singles:
         best, best_sim = -1, threshold
         for slot, centroid in enumerate(centroids):
+            if len(grouped[slot]) >= size_cap:
+                continue
             sim = cosine(vectors[idx], centroid)
             if sim >= best_sim:
                 best, best_sim = slot, sim
@@ -468,10 +492,16 @@ b2b b2c pdf gif png jpg svg ide cli sdk orm jwt ssh ssl tls dns vpn ios sdk npm
 
 
 def pretty(word):
-    """Title-case a label word, leaving acronyms upper and hyphenates intact."""
+    """Capitalise a label word.
+
+    Uses manual capitalisation rather than str.title(), which mangles
+    apostrophes -- "china's" would become "China'S".
+    """
     if word in ACRONYMS:
         return word.upper()
-    return "-".join(part.title() for part in word.split("-"))
+    return "-".join(
+        part[:1].upper() + part[1:] for part in word.split("-") if part
+    )
 
 
 def label_group(indices, vectors, surface, title_stems, idf, used_labels):
@@ -640,6 +670,10 @@ def main(argv=None):
         help=f"merge similarity 0-1; lower = fewer, broader groups (default {MERGE_THRESHOLD})",
     )
     parser.add_argument(
+        "--max-group", type=int, default=None,
+        help="largest number of conversations one topic may hold",
+    )
+    parser.add_argument(
         "--sample", action="store_true",
         help="mark the output as built from sample data",
     )
@@ -654,9 +688,12 @@ def main(argv=None):
     print(f"Read {len(convs)} conversations", file=sys.stderr)
 
     vectors, surface, title_stems, idf = build_vectors(convs)
-    groups = cluster(vectors, threshold=args.threshold)
-    groups = consolidate(groups, vectors, args.threshold * CONSOLIDATE_RATIO)
-    groups = attach_leftovers(groups, vectors)
+    cap = args.max_group or default_cap(len(convs))
+    groups = cluster(vectors, threshold=args.threshold, size_cap=cap)
+    groups = consolidate(
+        groups, vectors, args.threshold * CONSOLIDATE_RATIO, size_cap=cap
+    )
+    groups = attach_leftovers(groups, vectors, size_cap=cap)
     payload = summarise(convs, groups, vectors, surface, title_stems, idf)
     payload["stats"]["sample"] = bool(args.sample)
 
