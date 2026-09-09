@@ -137,7 +137,7 @@ function bullets(s, x, y, w, h, items, size) {
     { text: "Operating cost ≈ 0.7% of what is lent each year.", options: { bullet: true, breakLine: true, paraSpaceAfter: 6 } },
     { text: "Scales by compute.", options: { bullet: true } },
   ], { x: 5.45, y: 2.45, w: 3.7, h: 2.2, fontFace: BFONT, fontSize: 12.5, color: WHITE, isTextBox: true, margin: 0, valign: "top" });
-  s.addText("Figures from the Verdigris economics model — a £150m book, 231 loans a year, identical pricing and funding on both sides.", { x: 0.6, y: 4.95, w: 8.8, h: 0.35, fontFace: BFONT, fontSize: 9.5, color: "9FBFB8", isTextBox: true, margin: 0 });
+  s.addText("Figures from the Verdigris economics model — a £150m book, 181 loans a year, identical pricing and funding on both sides.", { x: 0.6, y: 4.95, w: 8.8, h: 0.35, fontFace: BFONT, fontSize: 9.5, color: "9FBFB8", isTextBox: true, margin: 0 });
 }
 
 // =====================================================================
@@ -150,12 +150,12 @@ function bullets(s, x, y, w, h, items, size) {
     [{ text: "£ per year", options: { bold: true, color: WHITE, fill: { color: DEEP } } }, { text: "Northgate", options: { bold: true, color: WHITE, fill: { color: DEEP }, align: "right" } }, { text: "How", options: { bold: true, color: WHITE, fill: { color: DEEP } } }],
     ["Gross interest income", "£16.2m", "£150m book × 0.90%/month"],
     ["Less cost of funds", "(£12.5m)", "95% partner-funded at 8.75% pa"],
-    ["Fees retained (arrangement, admin, drawdown, redemption)", "£2.1m", "2% fee mostly paid away to introducers; ~£3k of fees per loan"],
-    ["Less partner fees and expected losses", "(£0.9m)", "£500 per deal; 0.5% of book"],
-    [{ text: "Net revenue", options: { bold: true, fill: { color: PALE } } }, { text: "£4.9m", options: { bold: true, fill: { color: PALE }, align: "right" } }, { text: "3.3% of book — what has to pay for the business", options: { fill: { color: PALE } } }],
-    ["People, fully loaded (37 FTE)", "(£3.7m)", "Salaries + 15% NI + pension + on-costs"],
+    ["Fees retained (arrangement, admin, drawdown, redemption)", "£1.9m", "2% fee mostly paid away to introducers; ~£3k of fees per loan"],
+    ["Less partner fees and expected losses", "(£0.8m)", "£500 per deal; 0.5% of book"],
+    [{ text: "Net revenue", options: { bold: true, fill: { color: PALE } } }, { text: "£4.8m", options: { bold: true, fill: { color: PALE }, align: "right" } }, { text: "3.3% of book — what has to pay for the business", options: { fill: { color: PALE } } }],
+    ["People, fully loaded (37 FTE)", "(£3.6m)", "Salaries + 15% NI + pension + on-costs"],
     ["Office, software, data searches", "(£0.5m)", "£9.6k per desk; £50 of searches per case"],
-    [{ text: "Operating profit", options: { bold: true, fill: { color: PALE } } }, { text: "£0.7m", options: { bold: true, fill: { color: PALE }, align: "right" } }, { text: "14% margin. £18,300 to originate each loan.", options: { fill: { color: PALE } } }],
+    [{ text: "Operating profit", options: { bold: true, fill: { color: PALE } } }, { text: "£0.7m", options: { bold: true, fill: { color: PALE }, align: "right" } }, { text: "14% margin. £22,900 to originate each loan.", options: { fill: { color: PALE } } }],
   ];
   s.addTable(rows, { x: 0.5, y: 1.62, w: 9.0, colW: [3.7, 1.1, 4.2], fontFace: BFONT, fontSize: 10, color: INK, border: { type: "solid", color: "DDDDDD", pt: 0.5 }, rowH: 0.34, valign: "middle", autoPage: false, margin: 0.04 });
   body(s, 0.5, 4.75, 9, 0.45, "The example deal in a lender's own calculator returns 4.6% gross margin on facility over 18 months. Almost all of it goes on the people who process the file.", { fontSize: 10, italic: true, color: MUTED });
@@ -169,19 +169,19 @@ function bullets(s, x, y, w, h, items, size) {
 {
   const s = lightSlide("The same £150m book, run AI-native");
   s.addChart(pres.ChartType.bar, [
-    { name: "Northgate (traditional)", labels: ["Headcount", "Operating cost £m", "Operating profit £m"], values: [37, 4.23, 0.71] },
-    { name: "Verdigris (AI-native)", labels: ["Headcount", "Operating cost £m", "Operating profit £m"], values: [8, 1.05, 3.90] },
+    { name: "Northgate (traditional)", labels: ["Headcount", "Operating cost £m", "Operating profit £m"], values: [37, 4.14, 0.68] },
+    { name: "Verdigris (AI-native)", labels: ["Headcount", "Operating cost £m", "Operating profit £m"], values: [8, 1.01, 3.82] },
   ], {
     x: 0.5, y: 1.3, w: 5.4, h: 3.6, barDir: "col", barGrouping: "clustered",
     chartColors: ["9FBFB8", VERD], showValue: true, dataLabelPosition: "outEnd", dataLabelFontSize: 10, dataLabelColor: INK, dataLabelFormatCode: "#,##0.0#",
     catAxisLabelFontSize: 10, catAxisLabelColor: INK, valAxisHidden: true, valGridLine: { style: "none" }, catGridLine: { style: "none" },
     showLegend: true, legendPos: "b", legendFontSize: 10, legendColor: INK, showTitle: false,
   });
-  stat(s, 6.3, 1.25, 3.2, "4.0×", "lower operating cost for the same loans", COPPER);
-  stat(s, 6.3, 2.65, 3.2, "£4,500", "to originate each loan, versus £18,300");
+  stat(s, 6.3, 1.25, 3.2, "4.1×", "lower operating cost for the same loans", COPPER);
+  stat(s, 6.3, 2.65, 3.2, "£5,600", "to originate each loan, versus £22,900");
   stat(s, 6.3, 4.05, 3.2, "79%", "operating margin, versus 14%");
   footer(s, 6);
-  s.addNotes("Eight people: two founders, two senior underwriters who review and decide, one ops, one compliance, one BDM, one engineer. AI cost is £16 per case with a 10x safety factor, plus £50 of data searches.");
+  s.addNotes("Eight people: two founders, two senior underwriters who review and decide, one ops, one compliance, one BDM, one engineer. AI cost is £16 per case with a 10x safety factor, plus £50 of data searches. Traditional profit £0.68m, AI-native £3.82m on £4.8m net revenue.");
 }
 
 // =====================================================================
@@ -199,8 +199,8 @@ function bullets(s, x, y, w, h, items, size) {
     showLegend: true, legendPos: "b", legendFontSize: 10, legendColor: INK, showTitle: true, title: "People needed", titleFontSize: 12, titleColor: INK,
   });
   s.addChart(pres.ChartType.line, [
-    { name: "Northgate profit £m", labels: ["£150m book", "£300m book", "£600m book"], values: [0.7, 2.5, 6.0] },
-    { name: "Verdigris profit £m", labels: ["£150m book", "£300m book", "£600m book"], values: [3.9, 8.4, 17.4] },
+    { name: "Northgate profit £m", labels: ["£150m book", "£300m book", "£600m book"], values: [0.7, 2.4, 5.9] },
+    { name: "Verdigris profit £m", labels: ["£150m book", "£300m book", "£600m book"], values: [3.8, 8.2, 17.0] },
   ], {
     x: 5.1, y: 1.3, w: 4.4, h: 3.4, chartColors: ["9FBFB8", COPPER], lineSize: 3, lineDataSymbolSize: 8,
     showValue: true, dataLabelFontSize: 10, dataLabelColor: INK, dataLabelPosition: "t", dataLabelFormatCode: "#,##0.0",
@@ -276,7 +276,7 @@ function bullets(s, x, y, w, h, items, size) {
   card(s, 0.5, 2.85, 4.4, 2.2);
   body(s, 0.7, 2.95, 4.0, 0.3, "Wedge: sell the engine before lending with it", { bold: true, fontSize: 12.5, color: DEEP });
   bullets(s, 0.7, 3.3, 4.0, 1.7, [
-    "Per-case pricing to small and mid-size lenders at £250, against ~£700 of in-house cost per assessed case.",
+    "Per-case pricing to small and mid-size lenders at £250, against ~£600 of in-house cost per assessed case.",
     "~65,000 cases assessed a year across the market (17,000 loans × 4 cases each): a £16m annual pool at that price, and a direct line into every lender's credit team.",
     "Design partners give the training data and the credibility to originate."
   ], 10);
@@ -284,7 +284,7 @@ function bullets(s, x, y, w, h, items, size) {
   s.addText("Then: originate on the AI-native cost base", { x: 5.3, y: 2.95, w: 4.0, h: 0.3, fontFace: BFONT, fontSize: 12.5, bold: true, color: WHITE, isTextBox: true, margin: 0 });
   s.addText([
     { text: "Funding partners already lend 95% of each loan at 8.25–9.75%; the lender puts in 5% first-loss. The funding model exists — the cost base is the innovation.", options: { bullet: true, breakLine: true, paraSpaceAfter: 6 } },
-    { text: "A £150m book on the Verdigris cost base makes £3.9m a year, not £0.7m.", options: { bullet: true, breakLine: true, paraSpaceAfter: 6 } },
+    { text: "A £150m book on the Verdigris cost base makes £3.8m a year, not £0.7m.", options: { bullet: true, breakLine: true, paraSpaceAfter: 6 } },
     { text: "Target: £50m book in year 2, £150m in year 3, funded deal-by-deal then on a facility.", options: { bullet: true } },
   ], { x: 5.3, y: 3.3, w: 4.0, h: 1.7, fontFace: BFONT, fontSize: 10, color: "E6F0ED", isTextBox: true, margin: 0, valign: "top" });
   footer(s, 10);
@@ -336,7 +336,7 @@ function bullets(s, x, y, w, h, items, size) {
     { text: "Antler's £210k buys", options: { bold: true, breakLine: true } },
     { text: "six months of two founders full-time, v1 of the engine, three design partners on live cases, and SEIS advance assurance in hand for the angel round.", options: { breakLine: true, paraSpaceAfter: 8 } },
     { text: "What you get", options: { bold: true, breakLine: true } },
-    { text: "a domain founder who has done the job by hand, a market where cost is the only lever left, and a model that makes £3.9m where the incumbent makes £0.7m.", options: {} },
+    { text: "a domain founder who has done the job by hand, a market where cost is the only lever left, and a model that makes £3.8m where the incumbent makes £0.7m.", options: {} },
   ], { x: 5.65, y: 1.3, w: 3.5, h: 3.5, fontFace: BFONT, fontSize: 11, color: WHITE, isTextBox: true, margin: 0, valign: "top" });
   s.addText("lisawongcn@gmail.com  ·  linkedin.com/in/lisa-h-53139529a", { x: 0.6, y: 4.9, w: 6, h: 0.3, fontFace: BFONT, fontSize: 10, color: "9FBFB8", isTextBox: true, margin: 0 });
 }
@@ -349,13 +349,13 @@ function bullets(s, x, y, w, h, items, size) {
   const hdr = (t, a) => ({ text: t, options: { bold: true, color: WHITE, fill: { color: DEEP }, align: a || "left" } });
   const rows = [
     [hdr("Assumption"), hdr("Value", "right"), hdr("Basis")],
-    ["Loan book / average loan / term", "£150m / £650k / 12 mo", "Founder pipeline data (median ≈ £440k, up to £1.6m); BDLA avg £540k"],
-    ["Loans completed / cases assessed per year", "231 / 924", "~1 in 4 assessed cases completes"],
+    ["Loan book / blended loan / term", "£150m / £830k / 12 mo", "Founder: bridging £500–800k (institutional partner), development £1–1.5m (bank partner), 30% dev"],
+    ["Loans completed / cases assessed per year", "181 / 724", "~1 in 4 assessed cases completes"],
     ["Borrower rate", "0.90% per month", "Lender calculator 0.95%; market average 0.81–0.84%"],
     ["Cost of funds / partner share", "8.75% pa / 95%", "Lender rate card: 8.25–9.75% at 95% advance; 5% first loss"],
     ["Arrangement fee charged / retained", "2.0% / 0.5%", "Introducer share paid away; £3k of admin and redemption fees per loan"],
     ["Expected credit loss", "0.5% of book pa", "Prudent; comparator reports zero capital losses"],
-    ["Salaries and on-costs", "London 2025–26 bands", "Job ads and salary guides; NI 15%, pension 5%, 8% other on-costs"],
+    ["Salaries and on-costs", "London 2025–26 bands", "Founder: analysts under £55k; other roles from job ads and guides; NI 15%, pension 5%, 8% other"],
     ["AI cost per case", "£16 + £50 data", "~320k tokens ≈ $2, ×10 safety factor; Land Registry, KYC, AVM, credit searches"],
     ["Underwriter hours per case", "12 / 1.5", "Traditional / AI-native. Founder estimate; to be measured with design partners"],
   ];

@@ -73,14 +73,16 @@ lines = [
     "1. Assumptions — loan book, pricing, fees, funding cost, losses, on-costs, AI cost per case.",
     "2. Headcount — Traditional — 36-person team by function, salary, bonus, fully loaded cost.",
     "3. Headcount — AI-native — 8-person team doing the same book with AI agents.",
-    "4. Revenue — revenue build for the loan book (identical for both models).",
-    "5. Comparison — P&L side by side, cost per loan, margin, and the scaling table (£150m → £600m book).",
-    "6. Per-case cost — what it costs to underwrite ONE case, human vs AI-assisted.",
-    "7. Sources — where every number came from, with URLs.",
+    "4. Salary benchmarks — industry ranges (low / mid / high) next to the figures used.",
+    "5. Revenue — revenue build for the loan book (identical for both models).",
+    "6. Comparison — P&L side by side, cost per loan, margin, and the scaling table (£150m → £600m book).",
+    "7. Per-case cost — what it costs to underwrite ONE case, human vs AI-assisted.",
+    "8. Sources — where every number came from, with URLs.",
     "",
     "Status of the numbers",
     "• Salary bands: 2025–26 London job ads and salary guides (see Sources). C-suite bands are estimates.",
-    "• Loan book, loan size, completions: founder estimate calibrated to public market data (BDLA avg loan £540k; ~25 loans per analyst per year).",
+    "• Loan sizes: founder — bridging/refurb £500–800k via institutional partner (≤£1m); ground-up development £1–1.5m via bank partner, a growing share. Book £150m is a founder estimate.",
+    "• Analyst pay: founder — credit analysts normally under £55k; other roles from London 2025–26 benchmarks (Salary benchmarks sheet).",
     "• Pricing: market rates (0.81–0.84%/month average, Bridging Trends 2025–26). Arrangement fee and broker fee are market-typical assumptions.",
     "• AI cost per case: computed from Anthropic list prices (June 2026) and typical document volumes; a 10x safety factor is applied.",
     "• Nothing in this model is a claim about any specific company. 'Northgate Bridging' is a composite.",
@@ -104,15 +106,18 @@ rows = [
     # (label, value, fmt, unit, note, key)
     ("LOAN BOOK", None, None, None, None, False),
     ("Live loan book (average)", 150_000_000, GBP, "£", "Founder estimate for a ~35-person lender; consistent with £3–10m book per employee benchmark (Octane, Hope, Tuscan) and est. £120–320m for the comparator.", True),
-    ("Average loan size", 650_000, GBP, "£", "Founder data: pipeline tracker Jan 2026 shows facilities £205k–£1.59m, median ≈ £440k; development loans larger; CV: typically £500k–£1m. BDLA market average £540k.", True),
+    ("Bridging / refurbishment: average loan size", 650_000, GBP, "£", "Founder: funded by the institutional partner, normally up to £1m; typical property £500–800k. Pipeline tracker Jan 2026: facilities £205k–£1.59m, median ≈ £440k.", True),
+    ("Ground-up development: average loan size", 1_250_000, GBP, "£", "Founder: funded by the bank partner, typically £1m–£1.5m; a growing share of the book.", True),
+    ("Share of originations that are ground-up development", 0.30, PCT, "% by count", "Founder: 'getting more of those'; 30% assumed. Change to reflect the current mix.", True),
+    ("Blended average loan size", "=C7*(1-C9)+C8*C9", GBP, "£", "Weighted by product mix.", False),
     ("Average term", 12, NUM, "months", "Bridging Trends 2025 average term 12 months; founder calculator example 18 months (refurb).", False),
-    ("Loans completed per year", "=ROUND(C6/C7*12/C8,0)", NUM, "loans", "Book ÷ avg loan × 12 ÷ term. ~240 → ~24 per underwriter with 10 in credit, matching ~25 loans/yr per analyst.", False),
-    ("Annual originations (£)", "=C9*C7", GBP, "£", "Loans × average loan size.", False),
+    ("Loans completed per year", "=ROUND(C6/C10*12/C11,0)", NUM, "loans", "Book ÷ blended loan × 12 ÷ term. With 10 in credit ≈ 19 per underwriter, versus founder's ~25/yr as an analyst.", False),
+    ("Annual originations (£)", "=C12*C10", GBP, "£", "Loans × blended average loan size.", False),
     ("Applications assessed per completed loan", 4, NUM1, "x", "Founder estimate: pipeline of 15–23 live cases vs ~2 completions/month per analyst → roughly 1 in 4 assessed cases completes.", False),
-    ("Cases assessed per year", "=C9*C11", NUM, "cases", "Every assessed case costs underwriting effort whether or not it completes.", False),
+    ("Cases assessed per year", "=C12*C14", NUM, "cases", "Every assessed case costs underwriting effort whether or not it completes.", False),
     ("PRICING & REVENUE", None, None, None, None, False),
     ("Borrower interest rate (monthly)", 0.0090, PCT2, "% / month", "Founder calculator: 0.95%/month fixed on a medium refurb (variable option BoE 4.25% + 0.51%/mo = 10.37% pa). Market average 0.81–0.84% (Bridging Trends). 0.90% blended used.", True),
-    ("Borrower interest rate (annualised, simple)", "=C14*12", PCT, "% pa", "Simple ×12. Founder calculator effective rate 11.98% pa on 0.95%/mo.", False),
+    ("Borrower interest rate (annualised, simple)", "=C17*12", PCT, "% pa", "Simple ×12. Founder calculator effective rate 11.98% pa on 0.95%/mo.", False),
     ("Arrangement fee charged to borrower", 0.02, PCT, "% of loan", "Founder calculator: 2% of gross loan ('Lender & Broker Fee').", True),
     ("Arrangement fee retained by lender (after introducer share)", 0.005, PCT, "% of loan", "Founder calculator: on the example deal 0% retained, 2% paid as 'introducer share'. Founder: broker payout 1–2%. 0.5% retained assumed — change if your typical split differs.", True),
     ("Admin fee per loan (retained)", 1500, GBP, "£", "Founder calculator: £1,995 (<£100k), £1,500 (£100–250k), £1,250 (>£250k) automatic admin fee. £1,500 blended.", False),
@@ -161,6 +166,7 @@ for rr in range(5, r):
 
 # Convenience names
 BOOK = addr["Live loan book (average)"]
+AVG_LOAN = addr["Blended average loan size"]
 LOANS = addr["Loans completed per year"]
 ORIG = addr["Annual originations (£)"]
 CASES = addr["Cases assessed per year"]
@@ -227,9 +233,9 @@ def headcount_sheet(name, title, team, intro):
 
 trad_team = [
     ("Credit", "Head of Credit", 1, 115000, 0.25, "Head of Credit, bridging/dev lender London £100–130k (jobsite; Morgan McKinley). EST."),
-    ("Credit", "Senior underwriter (bridging + development)", 2, 75000, 0.15, "Senior bridging UW £70–80k + 10–20% (exec-appointments; Fintelligent)."),
-    ("Credit", "Credit analyst / underwriter (mid)", 4, 55000, 0.15, "Mid UW £45–65k + 10–20% (Tandem; Fintelligent job ads)."),
-    ("Credit", "Junior credit analyst", 3, 37500, 0.05, "Junior bridging UW £30–45k (Fame Recruitment ad; talent.com)."),
+    ("Credit", "Senior underwriter (bridging + development)", 2, 65000, 0.15, "Founder: analysts normally under £55k; seniors above. Market ads: senior bridging UW £65–80k (exec-appointments; Fintelligent). £65k used."),
+    ("Credit", "Credit analyst / underwriter (mid)", 4, 50000, 0.10, "Founder: credit analysts normally under £55k. Market ads: £45–65k + 10–20% (Tandem; Fintelligent). £50k used."),
+    ("Credit", "Junior credit analyst", 3, 35000, 0.05, "Junior bridging UW £30–45k (Fame Recruitment ad; talent.com); founder: under £55k for analysts. £35k used."),
     ("Portfolio", "Portfolio manager", 1, 57500, 0.125, "Portfolio Manager bridging up to £60–65k + bonus (Reed; Fintelligent)."),
     ("Portfolio", "Completions / case manager", 3, 42500, 0.05, "Completions specialist up to £40k (+London uplift); case manager £30–35k (NRG)."),
     ("Portfolio", "Loan administrator / servicing", 4, 32000, 0.025, "Loan admin £26–38k London (Indeed; PayScale)."),
@@ -254,7 +260,7 @@ T, T_tot, T_off, T_soft, T_first, T_last = headcount_sheet(
 ai_team = [
     ("Leadership", "CEO / Head of Credit (founder, underwrites)", 1, 100000, 0.0, "Founder salary — below market by design at seed stage."),
     ("Leadership", "CTO (technical co-founder)", 1, 100000, 0.0, "Founder salary — below market by design at seed stage."),
-    ("Credit", "Senior underwriter (human-in-the-loop)", 2, 75000, 0.15, "Same band as traditional senior UW. Reviews AI-drafted packs, owns the decision."),
+    ("Credit", "Senior underwriter (human-in-the-loop)", 2, 65000, 0.15, "Same band as traditional senior UW. Reviews AI-drafted packs, owns the decision."),
     ("Operations", "Completions & servicing lead", 1, 42500, 0.05, "One person runs completions and servicing with automated workflow."),
     ("Compliance", "Compliance officer (SMF16/17)", 1, 67500, 0.125, "Regulated lender needs one regardless of size."),
     ("Sales", "BDM / broker relationships", 1, 65000, 0.40, "One BDM; brokers still introduce ~85% of flow."),
@@ -275,6 +281,53 @@ label(V, r, 2, "Platform, hosting, monitoring"); fx(V, r, 11, f"={PLATFORM}", GB
 # Traditional also incurs data costs per case (they buy the same searches)
 r = T_soft + 1
 label(T, r, 2, "Data & verification (cases × £ per case)"); fx(T, r, 11, f"={CASES}*{DATA_CASE}", GBP, link=True); T_data = r; r += 1
+
+
+# =====================================================================
+# Salary benchmarks sheet
+# =====================================================================
+BM = wb.create_sheet("Salary benchmarks", 4)
+setw(BM, [3, 40, 14, 12, 12, 12, 12, 60])
+BM["B2"] = "Industry salary benchmarks — London, specialist lender, 2025–26"; BM["B2"].font = H1
+BM["B3"] = "Research ranges from job ads and salary guides (see Sources). 'Used' is the figure in the headcount sheets; founder input overrides the market midpoint where they differ."; BM["B3"].font = NOTE
+header(BM, 5, range(2, 9), ["Role", "Level", "Low", "Mid", "High", "Used", "Bonus % (mid)", "Source"])
+bench_rows = [
+    ("Credit analyst / underwriter", "Junior", 30000, 37500, 45000, 35000, 5, "Fame Recruitment ad; talent.com"),
+    ("Credit analyst / underwriter", "Mid", 45000, 55000, 65000, 50000, 15, "Tandem; Fintelligent job ads — founder: analysts normally under £55k"),
+    ("Credit analyst / underwriter", "Senior", 65000, 75000, 85000, 65000, 15, "exec-appointments; Fintelligent"),
+    ("Credit manager", "Manager", 65000, 72500, 85000, None, 15, "Fintelligent"),
+    ("Head of credit", "Head", 100000, 115000, 130000, 115000, 25, "jobsite; Morgan McKinley (estimate)"),
+    ("Case manager", "Junior/mid", 30000, 35000, 40000, None, 5, "NRG ad"),
+    ("Completions specialist", "Mid", 35000, 42500, 50000, 42500, 5, "Stellar Select (London uplift estimated)"),
+    ("Loan administrator / servicing", "Junior", 26000, 32000, 38000, 32000, 2.5, "Indeed; PayScale"),
+    ("Portfolio manager", "Mid/senior", 50000, 57500, 65000, 57500, 12.5, "Reed; Fintelligent"),
+    ("BDM", "Mid", 55000, 65000, 80000, 65000, 40, "Fintelligent; Totaljobs (OTE 1.3–1.8x)"),
+    ("Senior BDM / originator", "Senior", 75000, 85000, 90000, 85000, 60, "Fintelligent; jobsite"),
+    ("Head of sales", "Head", 90000, 110000, 130000, 110000, 35, "Glassdoor; bridgingloandirectory (estimate)"),
+    ("Marketing executive", "Junior/mid", 30000, 36000, 43000, 36000, 2.5, "Glassdoor"),
+    ("Marketing manager", "Manager", 41000, 48000, 57000, 48000, 7.5, "Glassdoor"),
+    ("CEO / MD", "C-suite", 150000, 200000, 250000, 200000, 40, "Exec Capital (estimate; owner-MDs often take less + dividends)"),
+    ("CFO / FD", "C-suite", 110000, 140000, 170000, 140000, 22.5, "FD Capital (estimate)"),
+    ("CTO / Head of technology", "Head", 90000, 115000, 140000, 115000, 15, "Glassdoor (estimate)"),
+    ("COO / Operations director", "Director", 80000, 100000, 120000, 100000, 22.5, "Exec Capital (estimate)"),
+    ("Software engineer / IT", "Mid", 50000, 65000, 80000, 65000, 5, "Glassdoor"),
+    ("Compliance officer", "Mid/senior", 60000, 67500, 75000, 67500, 12.5, "Morgan McKinley 2026"),
+]
+r = 6
+for role, lvl, lo, mid, hi, used, bon, src in bench_rows:
+    label(BM, r, 2, role); BM.cell(row=r, column=3, value=lvl).font = NOTE
+    for col, v in ((4, lo), (5, mid), (6, hi)):
+        c = BM.cell(row=r, column=col, value=v); c.font = BLACK; c.number_format = GBP
+    if used is not None:
+        c = BM.cell(row=r, column=7, value=used); c.font = BLUE; c.number_format = GBP
+    else:
+        BM.cell(row=r, column=7, value="not in team").font = NOTE
+    c = BM.cell(row=r, column=8, value=bon / 100); c.font = BLACK; c.number_format = PCT
+    BM.cell(row=r, column=9, value=src).font = NOTE
+    r += 1
+BM.column_dimensions["I"].width = 60
+r += 1
+label(BM, r, 2, "Employer on-costs used: NI 15% above £5,000; pension 5%; other 8% → fully loaded ≈ 1.28× base + bonus. London desk £9,600/yr.").font = NOTE
 
 # =====================================================================
 # Revenue sheet
