@@ -1,0 +1,721 @@
+<title>Lisa & Andreas Notice Cards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --paper: #EEF0EC;
+    --panel: #FBFBF9;
+    --panel-2: #F4F5F1;
+    --line: #CFD5CF;
+    --line-strong: #9AA59D;
+    --ink: #1B2A27;
+    --ink-2: #4A5A55;
+    --ink-3: #7A8A84;
+    --lisa: #2A5C52;
+    --lisa-soft: #DCE8E3;
+    --andreas: #8A5A1E;
+    --andreas-soft: #EFE3D2;
+    --us: #4A4F7A;
+    --us-soft: #E0E1EE;
+    --wax: #9E2F2B;
+    --wax-soft: #F3DEDC;
+    --focus: #2A5C52;
+    --shadow: 0 1px 2px rgba(27,42,39,.08), 0 8px 24px rgba(27,42,39,.08);
+    --display: "Fraunces", "Iowan Old Style", Georgia, serif;
+    --body: "Source Sans 3", "Segoe UI", Helvetica, Arial, sans-serif;
+    --mono: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #131A18;
+      --panel: #1C2523;
+      --panel-2: #222D2A;
+      --line: #33403C;
+      --line-strong: #56655F;
+      --ink: #E7EBE6;
+      --ink-2: #B4BFB9;
+      --ink-3: #7F8D87;
+      --lisa: #7FC2B3;
+      --lisa-soft: #1F3B36;
+      --andreas: #D9A65F;
+      --andreas-soft: #3B2E1A;
+      --us: #A7ABD9;
+      --us-soft: #2A2D47;
+      --wax: #E07B75;
+      --wax-soft: #45221F;
+      --focus: #7FC2B3;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #131A18;
+    --panel: #1C2523;
+    --panel-2: #222D2A;
+    --line: #33403C;
+    --line-strong: #56655F;
+    --ink: #E7EBE6;
+    --ink-2: #B4BFB9;
+    --ink-3: #7F8D87;
+    --lisa: #7FC2B3;
+    --lisa-soft: #1F3B36;
+    --andreas: #D9A65F;
+    --andreas-soft: #3B2E1A;
+    --us: #A7ABD9;
+    --us-soft: #2A2D47;
+    --wax: #E07B75;
+    --wax-soft: #45221F;
+    --focus: #7FC2B3;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 16px;
+    line-height: 1.45;
+    padding-inline: clamp(16px, 4vw, 40px);
+    padding-block: 0 64px;
+  }
+  .wrap { max-width: 1040px; margin: 0 auto; }
+
+  /* ---------- masthead ---------- */
+  .mast {
+    display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between;
+    gap: 16px 32px;
+    padding-block: 36px 20px;
+    border-bottom: 1px solid var(--line-strong);
+  }
+  .mast h1 {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(30px, 5vw, 44px);
+    line-height: 1.05;
+    margin: 0;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    font-variation-settings: "opsz" 144;
+  }
+  .mast h1 em { font-style: italic; }
+  .eyebrow {
+    font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--ink-3); margin: 0 0 8px;
+  }
+  .mast .meta { font-size: 14px; color: var(--ink-2); max-width: 36ch; margin: 0; }
+  .mast .meta b { color: var(--ink); font-weight: 600; }
+
+  /* ---------- toolbar ---------- */
+  .bar {
+    position: sticky; top: 0; z-index: 5;
+    background: var(--paper);
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: 12px 20px;
+    padding-block: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+  .tabs { display: inline-flex; border: 1px solid var(--line-strong); border-radius: 999px; padding: 3px; background: var(--panel); }
+  .tabs button {
+    appearance: none; border: 0; background: transparent; color: var(--ink-2);
+    font: inherit; font-weight: 600; font-size: 14px;
+    padding: 6px 16px; border-radius: 999px; cursor: pointer;
+  }
+  .tabs button[aria-selected="true"] { background: var(--ink); color: var(--paper); }
+  .tabs button:focus-visible, .btn:focus-visible, .switch input:focus-visible + span { outline: 2px solid var(--focus); outline-offset: 2px; }
+  .status { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; font-size: 14px; color: var(--ink-2); }
+  .progress { display: inline-flex; align-items: center; gap: 8px; font-variant-numeric: tabular-nums; }
+  .progress i { display: inline-block; width: 90px; height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; }
+  .progress i b { display: block; height: 100%; width: 0; background: var(--lisa); transition: width .3s; }
+  .sync { display: inline-flex; align-items: center; gap: 6px; }
+  .sync::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--line-strong); }
+  .sync[data-state="shared"]::before { background: var(--lisa); }
+  .sync[data-state="saving"]::before { background: var(--andreas); }
+  .sync[data-state="local"]::before { background: var(--ink-3); }
+  .btn {
+    appearance: none; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
+    border: 1px solid var(--line-strong); background: var(--panel); color: var(--ink);
+    padding: 6px 14px; border-radius: 999px;
+  }
+  .btn:hover { border-color: var(--ink-2); }
+  .switch { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer; user-select: none; }
+  .switch input { position: absolute; opacity: 0; width: 0; height: 0; }
+  .switch span.track { width: 36px; height: 20px; border-radius: 10px; background: var(--line-strong); position: relative; transition: background .2s; }
+  .switch span.track::after { content: ""; position: absolute; top: 3px; left: 3px; width: 14px; height: 14px; border-radius: 50%; background: var(--panel); transition: left .2s; }
+  .switch input:checked + span.track { background: var(--wax); }
+  .switch input:checked + span.track::after { left: 19px; }
+
+  /* ---------- notes strip ---------- */
+  .notes {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px;
+    margin-block: 22px 8px;
+  }
+  .note {
+    border-left: 3px solid var(--line-strong);
+    padding: 4px 0 4px 14px;
+    font-size: 14px; color: var(--ink-2);
+  }
+  .note h3 { margin: 0 0 4px; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink); font-weight: 600; }
+  .note.camden { border-color: var(--lisa); }
+  .note.denmark { border-color: var(--wax); }
+  .note p { margin: 0; }
+  .note p + p { margin-top: 4px; }
+
+  /* ---------- form ---------- */
+  .view { display: block; }
+  .view[hidden] { display: none; }
+
+  .sec { margin-block: 34px 0; }
+  .sec-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 16px; margin-bottom: 6px; }
+  .sec-head h2 {
+    font-family: var(--display); font-weight: 600; font-size: 24px; margin: 0; letter-spacing: -0.005em;
+    font-variation-settings: "opsz" 48;
+  }
+  .sec-head p { margin: 0; font-size: 14px; color: var(--ink-2); max-width: 60ch; }
+  .cols-head {
+    display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1fr); gap: 0 18px;
+    padding: 10px 0 6px; border-bottom: 1px solid var(--line-strong);
+    position: sticky; top: 57px; background: var(--paper); z-index: 2;
+  }
+  .cols-head span { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; color: var(--ink-3); }
+  .cols-head .lisa { color: var(--lisa); }
+  .cols-head .andreas { color: var(--andreas); }
+  .row {
+    display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1fr); gap: 6px 18px;
+    padding: 12px 0; border-bottom: 1px solid var(--line);
+    align-items: start;
+  }
+  .row.shared { grid-template-columns: minmax(0, 1.1fr) minmax(0, 2fr); }
+  .q { padding-top: 6px; }
+  .q label { font-weight: 600; display: block; }
+  .q small { display: block; font-size: 13px; color: var(--ink-2); margin-top: 2px; max-width: 42ch; }
+  .q .tags { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+  .tag {
+    font-size: 11px; letter-spacing: .08em; text-transform: uppercase; font-weight: 600;
+    padding: 2px 7px; border-radius: 3px; background: var(--panel-2); color: var(--ink-3); border: 1px solid var(--line);
+  }
+  .tag.c { color: var(--lisa); border-color: color-mix(in srgb, var(--lisa) 40%, transparent); background: var(--lisa-soft); }
+  .tag.d { color: var(--wax); border-color: color-mix(in srgb, var(--wax) 40%, transparent); background: var(--wax-soft); }
+  .field input, .field textarea, .field select {
+    width: 100%; font: inherit; font-family: var(--mono); font-size: 14px;
+    color: var(--ink); background: var(--panel);
+    border: 1px solid var(--line-strong); border-radius: 6px;
+    padding: 8px 10px;
+  }
+  .field textarea { min-height: 64px; resize: vertical; line-height: 1.4; }
+  .field input:focus, .field textarea:focus, .field select:focus { outline: 2px solid var(--focus); outline-offset: 0; border-color: var(--focus); }
+  .field[data-person="lisa"] input:focus, .field[data-person="lisa"] textarea:focus, .field[data-person="lisa"] select:focus { --focus: var(--lisa); }
+  .field[data-person="andreas"] input:focus, .field[data-person="andreas"] textarea:focus, .field[data-person="andreas"] select:focus { --focus: var(--andreas); }
+  .field[data-person="shared"] input:focus, .field[data-person="shared"] textarea:focus, .field[data-person="shared"] select:focus { --focus: var(--us); }
+  .field .who { display: none; }
+
+  @media (max-width: 720px) {
+    .cols-head { display: none; }
+    .row, .row.shared { grid-template-columns: 1fr; gap: 8px; padding: 14px 0; }
+    .q { padding-top: 0; }
+    .field .who { display: block; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; font-weight: 600; margin-bottom: 4px; }
+    .field[data-person="lisa"] .who { color: var(--lisa); }
+    .field[data-person="andreas"] .who { color: var(--andreas); }
+  }
+
+  /* ---------- checklist ---------- */
+  .checks { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px 32px; margin-top: 10px; }
+  .checks h3 { margin: 0 0 8px; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; }
+  .checks label { display: flex; gap: 10px; align-items: start; padding: 6px 0; border-bottom: 1px solid var(--line); font-size: 15px; cursor: pointer; }
+  .checks input { margin-top: 5px; accent-color: var(--lisa); }
+  .checks label small { display: block; color: var(--ink-2); font-size: 13px; }
+
+  /* ---------- cards ---------- */
+  .deck { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 22px; margin-top: 24px; align-items: start; }
+  .card {
+    background: var(--panel); border-radius: 12px; box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+    overflow: hidden;
+    --hue: var(--ink-2); --hue-soft: var(--panel-2);
+  }
+  .card[data-person="lisa"] { --hue: var(--lisa); --hue-soft: var(--lisa-soft); }
+  .card[data-person="andreas"] { --hue: var(--andreas); --hue-soft: var(--andreas-soft); }
+  .card[data-person="shared"] { --hue: var(--us); --hue-soft: var(--us-soft); }
+  .card-head {
+    background: var(--hue-soft); color: var(--hue);
+    padding: 14px 18px 12px;
+    display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+  .card-head h2 { font-family: var(--display); font-weight: 600; font-size: 22px; margin: 0; font-variation-settings: "opsz" 48; }
+  .card-head span { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; }
+  .card-body { padding: 6px 18px 14px; }
+  .card h4 { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); margin: 14px 0 4px; padding-bottom: 4px; border-bottom: 1px solid var(--line); }
+  .kv { display: grid; grid-template-columns: minmax(0, 11ch) minmax(0, 1fr); gap: 2px 12px; padding: 5px 0; border-bottom: 1px dotted var(--line); align-items: baseline; }
+  .kv:last-child { border-bottom: 0; }
+  .kv .k { font-size: 12.5px; color: var(--ink-2); line-height: 1.3; }
+  .kv .v { font-family: var(--mono); font-size: 13.5px; line-height: 1.35; white-space: pre-wrap; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+  .kv .v.empty { color: var(--ink-3); font-family: var(--body); font-style: italic; }
+  .card.docs .kv { grid-template-columns: minmax(0, 8ch) minmax(0, 1fr); }
+  .card.docs .kv .v { font-family: var(--body); font-size: 14px; }
+  .deck[data-quiz="on"] .kv .v:not(.empty) { cursor: pointer; }
+  .deck[data-quiz="on"] .kv .v:not(.empty):not(.shown) {
+    color: transparent; text-shadow: 0 0 9px var(--ink); user-select: none;
+  }
+  .deck[data-quiz="on"] .kv .v:not(.empty):not(.shown):hover { text-shadow: 0 0 7px var(--ink); }
+  .quiz-tip { font-size: 14px; color: var(--ink-2); margin: 16px 0 0; }
+  .quiz-tip[hidden] { display: none; }
+  .empty-deck { margin: 32px 0; padding: 22px; border: 1px dashed var(--line-strong); border-radius: 12px; color: var(--ink-2); font-size: 15px; max-width: 60ch; }
+  .empty-deck b { color: var(--ink); }
+
+  .foot { margin-top: 40px; font-size: 13px; color: var(--ink-3); max-width: 70ch; }
+
+  @media print {
+    body { background: #fff; color: #000; padding: 0; font-size: 12px; }
+    .bar, .notes, .mast .meta, .quiz-tip, .foot { display: none !important; }
+    .view[hidden] { display: none; }
+    .deck { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .card { box-shadow: none; break-inside: avoid; border-color: #999; }
+    .deck[data-quiz="on"] .kv .v { color: #000; text-shadow: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header class="mast">
+    <div>
+      <p class="eyebrow">Notice of marriage · Camden Town Hall & Denmark</p>
+      <h1>Lisa <em>&amp;</em> Andreas</h1>
+    </div>
+    <p class="meta">Fill this in together, then switch to <b>Memory cards</b>. The registrar may interview you <b>separately</b>, so each of you should know the other's answers too.</p>
+  </header>
+
+  <div class="bar">
+    <div class="tabs" role="tablist" aria-label="View">
+      <button role="tab" id="tab-form" aria-selected="true" aria-controls="view-form">Fill in</button>
+      <button role="tab" id="tab-cards" aria-selected="false" aria-controls="view-cards">Memory cards</button>
+    </div>
+    <div class="status">
+      <span class="progress"><i><b id="bar"></b></i><span id="count">0 of 0 answered</span></span>
+      <span class="sync" id="sync" data-state="local">Saved on this device</span>
+      <label class="switch" id="quiz-wrap" hidden><input type="checkbox" id="quiz"><span class="track"></span>Quiz me</label>
+      <button class="btn" id="print" hidden>Print cards</button>
+    </div>
+  </div>
+
+  <section class="notes">
+    <div class="note camden">
+      <h3>Camden Town Hall · giving notice</h3>
+      <p>Both of you attend, each with a passport and proof of address dated within the last 3 months. Notice is displayed for 28 full days, so the earliest ceremony is on day 29. Non-UK/Irish nationals usually bring immigration proof and may have a longer wait if the notice is referred.</p>
+    </div>
+    <div class="note denmark">
+      <h3>Denmark · Familieretshuset</h3>
+      <p>The application goes to the Agency of Family Law before you travel. Once the marriage certificate of capacity is issued it stays valid for 4 months, and you marry at the chosen Danish town hall. Bring the same passports and proof of legal residence.</p>
+      <p>Check the exact rules with each office. The details above are a reminder, not the rulebook.</p>
+    </div>
+  </section>
+
+  <div id="view-form" class="view" role="tabpanel" aria-labelledby="tab-form"></div>
+
+  <div id="view-cards" class="view" role="tabpanel" aria-labelledby="tab-cards" hidden>
+    <p class="quiz-tip" id="quiz-tip" hidden>Answers are hidden. Tap one to check yourself. Try reciting Andreas's parents from memory, Lisa, and the other way round.</p>
+    <div class="deck" id="deck" data-quiz="off"></div>
+  </div>
+
+  <p class="foot">This page keeps your answers in a private store attached to it, so both of you can edit from your own phones. Passport numbers are here because the forms ask for them. Do not share the link beyond the two of you.</p>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ------------------------------------------------------------------
+     Question set. `asked`: c = Camden notice appointment, d = Denmark
+     application. Sections marked per: "person" render a Lisa and an
+     Andreas column; "shared" renders one wide answer.
+  ------------------------------------------------------------------ */
+  const PERSONS = [
+    { key: "lisa", label: "Lisa" },
+    { key: "andreas", label: "Andreas" }
+  ];
+
+  const SECTIONS = [
+    {
+      key: "identity", title: "Who you are", per: "person",
+      blurb: "Exactly as printed in your passport. The certificate copies this spelling.",
+      fields: [
+        { id: "fullName", label: "Full legal name", hint: "All given names and surname, passport order.", asked: "cd" },
+        { id: "formerNames", label: "Any former names", hint: "Maiden name, deed poll, previous married name. Bring the paperwork.", asked: "cd", type: "textarea" },
+        { id: "dob", label: "Date of birth", asked: "cd", type: "date" },
+        { id: "pob", label: "Place of birth", hint: "Town and country as on passport.", asked: "cd" },
+        { id: "nationality", label: "Nationality", hint: "All of them, if more than one.", asked: "cd" },
+        { id: "passport", label: "Passport number", hint: "Plus issue and expiry dates.", asked: "cd" },
+        { id: "sex", label: "Sex as registered", asked: "c", type: "select", options: ["", "Female", "Male"] },
+        { id: "maritalStatus", label: "Marital status now", hint: "If divorced or widowed: date of decree absolute or of death, and where.", asked: "cd", type: "select", options: ["", "Single, never married", "Divorced", "Widowed", "Civil partnership dissolved"] },
+        { id: "maritalDetail", label: "Previous marriage details", hint: "Name of former spouse, date and place it ended. Leave blank if none.", asked: "cd", type: "textarea" }
+      ]
+    },
+    {
+      key: "contact", title: "Where you live & how to reach you", per: "person",
+      blurb: "Camden asks how long you have lived in the district. Proof of address must match this exactly.",
+      fields: [
+        { id: "address", label: "Current address", hint: "Full address with postcode.", asked: "cd", type: "textarea" },
+        { id: "movedIn", label: "Living there since", hint: "Month and year is enough. You need 7 full days in Camden before giving notice.", asked: "c" },
+        { id: "prevAddress", label: "Previous address", hint: "If you moved in the last 12 months.", asked: "c", type: "textarea" },
+        { id: "phone", label: "Mobile number", asked: "cd" },
+        { id: "email", label: "Email", asked: "cd" }
+      ]
+    },
+    {
+      key: "work", title: "What you do", per: "person",
+      blurb: "The UK certificate prints an occupation for each of you. Say it in plain words.",
+      fields: [
+        { id: "jobTitle", label: "Job title", hint: "What goes on the certificate.", asked: "cd" },
+        { id: "jobDesc", label: "What that means day to day", hint: "One or two sentences. Registrars sometimes ask.", asked: "c", type: "textarea" },
+        { id: "employer", label: "Employer & where you work", hint: "Or 'self-employed', 'student', etc.", asked: "c" }
+      ]
+    },
+    {
+      key: "status", title: "Immigration & residence", per: "person",
+      blurb: "Asked of anyone who is not a British or Irish citizen. Denmark also needs proof of legal stay in the UK.",
+      fields: [
+        { id: "immStatus", label: "UK immigration status", hint: "Visa type or settled status, plus BRP / share-code if you have one.", asked: "cd" },
+        { id: "ukEntry", label: "Date you first came to the UK", asked: "c" },
+        { id: "immExpiry", label: "Visa or leave expires", asked: "cd" }
+      ]
+    },
+    {
+      key: "mother", title: "Mother", per: "person",
+      blurb: "Both parents go on the UK certificate with their occupations. Denmark asks for names too.",
+      fields: [
+        { id: "mName", label: "Mother's full name", hint: "Include her maiden surname.", asked: "cd" },
+        { id: "mDob", label: "Mother's date of birth", asked: "d", type: "date" },
+        { id: "mPob", label: "Mother's place of birth", asked: "d" },
+        { id: "mAddress", label: "Mother's address", hint: "Or 'deceased' with the year.", asked: "d", type: "textarea" },
+        { id: "mJob", label: "Mother's occupation", hint: "Current or last. 'Retired teacher' is fine.", asked: "c" }
+      ]
+    },
+    {
+      key: "father", title: "Father", per: "person",
+      fields: [
+        { id: "fName", label: "Father's full name", asked: "cd" },
+        { id: "fDob", label: "Father's date of birth", asked: "d", type: "date" },
+        { id: "fPob", label: "Father's place of birth", asked: "d" },
+        { id: "fAddress", label: "Father's address", hint: "Or 'deceased' with the year.", asked: "d", type: "textarea" },
+        { id: "fJob", label: "Father's occupation", asked: "c" }
+      ]
+    },
+    {
+      key: "us", title: "The two of you", per: "shared",
+      blurb: "The interview is partly about whether the relationship is genuine. Agree on the story and the dates.",
+      fields: [
+        { id: "met", label: "How, when and where you met", asked: "c", type: "textarea" },
+        { id: "togetherSince", label: "A couple since", hint: "Month and year.", asked: "c" },
+        { id: "livingTogetherSince", label: "Living together since", hint: "And at which address.", asked: "c" },
+        { id: "engaged", label: "When and where you got engaged", asked: "c" },
+        { id: "partnerFacts", label: "Things you should each know", hint: "Partner's birthday, middle names, siblings' names, what their parents do.", asked: "c", type: "textarea" },
+        { id: "camdenPlan", label: "Camden ceremony plan", hint: "Venue, intended date, ceremony type.", asked: "c" },
+        { id: "denmarkPlan", label: "Denmark plan", hint: "Which town hall, travel dates, application reference.", asked: "d" },
+        { id: "witnesses", label: "Witnesses", hint: "Two adults. Names and how you know them.", asked: "cd" },
+        { id: "nameAfter", label: "Surnames after marriage", hint: "Keeping, changing, or double-barrelling.", asked: "cd" },
+        { id: "children", label: "Children", hint: "Either of you, from any relationship. 'None' is an answer.", asked: "cd" },
+        { id: "language", label: "Interpreter needed?", hint: "Both must understand the ceremony language.", asked: "cd", type: "select", options: ["", "No", "Yes, for Lisa", "Yes, for Andreas"] },
+        { id: "sanFrancisco", label: "San Francisco move", hint: "Why you are giving notice now, and when you leave.", asked: "c", type: "textarea" }
+      ]
+    }
+  ];
+
+  const CHECKLIST = {
+    camden: [
+      { id: "c_passport", label: "Passports (both)", sub: "Original, in date" },
+      { id: "c_address", label: "Proof of address (both)", sub: "Bank statement, council tax or utility bill dated within 3 months, or a driving licence" },
+      { id: "c_status", label: "Immigration proof for non-UK/Irish nationals", sub: "BRP, visa, share code or settled-status letter" },
+      { id: "c_decree", label: "Decree absolute or death certificate", sub: "Only if previously married" },
+      { id: "c_namechange", label: "Deed poll or name-change paperwork", sub: "Only if names differ across documents" },
+      { id: "c_fee", label: "Notice fee, per person", sub: "Payable at the appointment" }
+    ],
+    denmark: [
+      { id: "d_passport", label: "Passport scans (both)", sub: "Colour, every page with a stamp" },
+      { id: "d_residence", label: "Proof of legal residence in the UK", sub: "Visa, BRP or settled status; not needed for EU citizens" },
+      { id: "d_status", label: "Proof of marital status", sub: "Divorce decree or death certificate if applicable" },
+      { id: "d_fee", label: "Familieretshuset application fee", sub: "Paid online with the application" },
+      { id: "d_booking", label: "Town hall date confirmed", sub: "Plus travel and hotel booked" }
+    ]
+  };
+
+  /* ------------------------------------------------------------------ */
+  const $ = (s, el) => (el || document).querySelector(s);
+  const ce = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+
+  let state = { lisa: {}, andreas: {}, shared: {}, checks: {} };
+  let db = null, docRef = null, remoteReady = false, applyingRemote = false;
+  const LS_KEY = "notice-cards-v1";
+
+  function loadLocal() {
+    try { const raw = localStorage.getItem(LS_KEY); if (raw) merge(JSON.parse(raw)); } catch (e) {}
+  }
+  function saveLocal() { try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch (e) {} }
+  function merge(obj) {
+    if (!obj || typeof obj !== "object") return;
+    for (const k of ["lisa", "andreas", "shared", "checks"]) {
+      if (obj[k] && typeof obj[k] === "object") state[k] = Object.assign({}, state[k], obj[k]);
+    }
+  }
+
+  /* ---------- form ---------- */
+  function control(f, person) {
+    const wrap = ce("div", "field"); wrap.dataset.person = person;
+    const who = ce("span", "who", person === "lisa" ? "Lisa" : person === "andreas" ? "Andreas" : "");
+    wrap.appendChild(who);
+    let el;
+    const id = person + "-" + f.id;
+    if (f.type === "textarea") { el = ce("textarea"); el.rows = 2; }
+    else if (f.type === "select") {
+      el = ce("select");
+      for (const o of f.options) { const op = ce("option", null, o || "—"); op.value = o; el.appendChild(op); }
+    } else { el = ce("input"); el.type = "text"; if (f.type === "date") el.placeholder = "DD Month YYYY"; el.autocomplete = "off"; }
+    el.id = id; el.name = id;
+    el.setAttribute("aria-label", (person === "shared" ? "" : (person === "lisa" ? "Lisa: " : "Andreas: ")) + f.label);
+    el.value = state[person][f.id] || "";
+    el.addEventListener("input", () => {
+      state[person][f.id] = el.value;
+      onChange();
+    });
+    wrap.appendChild(el);
+    return wrap;
+  }
+
+  function tags(asked) {
+    const t = ce("div", "tags");
+    if (asked.includes("c")) t.appendChild(ce("span", "tag c", "Camden"));
+    if (asked.includes("d")) t.appendChild(ce("span", "tag d", "Denmark"));
+    return t;
+  }
+
+  function buildForm() {
+    const root = $("#view-form"); root.innerHTML = "";
+    for (const s of SECTIONS) {
+      const sec = ce("section", "sec");
+      const head = ce("div", "sec-head");
+      head.appendChild(ce("h2", null, s.title));
+      if (s.blurb) head.appendChild(ce("p", null, s.blurb));
+      sec.appendChild(head);
+      if (s.per === "person") {
+        const ch = ce("div", "cols-head");
+        ch.appendChild(ce("span", null, "Question"));
+        ch.appendChild(ce("span", "lisa", "Lisa"));
+        ch.appendChild(ce("span", "andreas", "Andreas"));
+        sec.appendChild(ch);
+      }
+      for (const f of s.fields) {
+        const row = ce("div", "row" + (s.per === "shared" ? " shared" : ""));
+        const q = ce("div", "q");
+        const lab = ce("label", null, f.label);
+        lab.htmlFor = (s.per === "shared" ? "shared" : "lisa") + "-" + f.id;
+        q.appendChild(lab);
+        if (f.hint) q.appendChild(ce("small", null, f.hint));
+        q.appendChild(tags(f.asked));
+        row.appendChild(q);
+        if (s.per === "person") { row.appendChild(control(f, "lisa")); row.appendChild(control(f, "andreas")); }
+        else row.appendChild(control(f, "shared"));
+        sec.appendChild(row);
+      }
+      root.appendChild(sec);
+    }
+    // checklist
+    const sec = ce("section", "sec");
+    const head = ce("div", "sec-head");
+    head.appendChild(ce("h2", null, "What to bring"));
+    head.appendChild(ce("p", null, "Tick as you gather them. Originals for Camden, scans for Denmark."));
+    sec.appendChild(head);
+    const grid = ce("div", "checks");
+    for (const [key, items] of Object.entries(CHECKLIST)) {
+      const col = ce("div");
+      col.appendChild(ce("h3", null, key === "camden" ? "Camden Town Hall" : "Denmark"));
+      for (const it of items) {
+        const lab = ce("label");
+        const cb = ce("input"); cb.type = "checkbox"; cb.id = "chk-" + it.id; cb.checked = !!state.checks[it.id];
+        cb.addEventListener("change", () => { state.checks[it.id] = cb.checked; onChange(); });
+        lab.appendChild(cb);
+        const t = ce("span", null, it.label);
+        if (it.sub) t.appendChild(ce("small", null, it.sub));
+        lab.appendChild(t);
+        col.appendChild(lab);
+      }
+      grid.appendChild(col);
+    }
+    sec.appendChild(grid);
+    root.appendChild(sec);
+  }
+
+  function refreshFormValues() {
+    for (const s of SECTIONS) for (const f of s.fields) {
+      const people = s.per === "person" ? ["lisa", "andreas"] : ["shared"];
+      for (const p of people) {
+        const el = document.getElementById(p + "-" + f.id);
+        if (el && document.activeElement !== el) el.value = state[p][f.id] || "";
+      }
+    }
+    for (const items of Object.values(CHECKLIST)) for (const it of items) {
+      const cb = document.getElementById("chk-" + it.id); if (cb) cb.checked = !!state.checks[it.id];
+    }
+  }
+
+  /* ---------- cards ---------- */
+  function kv(label, value) {
+    const row = ce("div", "kv");
+    row.appendChild(ce("span", "k", label));
+    const v = ce("span", "v" + (value ? "" : " empty"), value || "not filled in");
+    if (value) v.addEventListener("click", () => v.classList.toggle("shown"));
+    row.appendChild(v);
+    return row;
+  }
+  function card(person, title, sub, groups) {
+    const c = ce("article", "card"); c.dataset.person = person;
+    const h = ce("div", "card-head");
+    h.appendChild(ce("h2", null, title));
+    h.appendChild(ce("span", null, sub));
+    c.appendChild(h);
+    const b = ce("div", "card-body");
+    for (const g of groups) {
+      if (g.title) b.appendChild(ce("h4", null, g.title));
+      for (const [k, v] of g.rows) b.appendChild(kv(k, v));
+    }
+    c.appendChild(b);
+    return c;
+  }
+  const short = {
+    fullName: "Full name", formerNames: "Former names", dob: "Born", pob: "Birthplace", nationality: "Nationality",
+    passport: "Passport", sex: "Sex", maritalStatus: "Status", maritalDetail: "Previous marriage",
+    address: "Address", movedIn: "There since", prevAddress: "Previous addr.", phone: "Mobile", email: "Email",
+    jobTitle: "Job title", jobDesc: "Day to day", employer: "Employer",
+    immStatus: "UK status", ukEntry: "In UK since", immExpiry: "Expires",
+    mName: "Name", mDob: "Born", mPob: "Birthplace", mAddress: "Address", mJob: "Occupation",
+    fName: "Name", fDob: "Born", fPob: "Birthplace", fAddress: "Address", fJob: "Occupation",
+    met: "How we met", togetherSince: "Together since", livingTogetherSince: "Cohabiting since", engaged: "Engaged",
+    partnerFacts: "Know by heart", camdenPlan: "Camden", denmarkPlan: "Denmark", witnesses: "Witnesses",
+    nameAfter: "Names after", children: "Children", language: "Interpreter", sanFrancisco: "San Francisco"
+  };
+  const sec = k => SECTIONS.find(s => s.key === k);
+  const rows = (s, p) => s.fields.filter(f => state[p][f.id]).map(f => [short[f.id] || f.label, state[p][f.id]]);
+
+  function buildCards() {
+    const deck = $("#deck"); deck.innerHTML = "";
+    const answered = countAnswered();
+    if (answered.done === 0) {
+      const e = ce("div", "empty-deck");
+      e.innerHTML = "Nothing to remember yet. Go back to <b>Fill in</b> and start with your names and dates of birth. The cards build themselves from whatever you have answered.";
+      deck.appendChild(e);
+      return;
+    }
+    for (const p of PERSONS) {
+      const groups = [
+        { rows: rows(sec("identity"), p.key) },
+        { title: "Contact", rows: rows(sec("contact"), p.key) },
+        { title: "Work", rows: rows(sec("work"), p.key) },
+        { title: "Residence", rows: rows(sec("status"), p.key) }
+      ].filter(g => g.rows.length);
+      if (groups.length) deck.appendChild(card(p.key, p.label, "Personal", groups));
+    }
+    for (const p of PERSONS) {
+      const groups = [
+        { title: "Mother", rows: rows(sec("mother"), p.key) },
+        { title: "Father", rows: rows(sec("father"), p.key) }
+      ].filter(g => g.rows.length);
+      if (groups.length) deck.appendChild(card(p.key, p.label + "'s parents", "Family", groups));
+    }
+    const usRows = rows(sec("us"), "shared");
+    if (usRows.length) deck.appendChild(card("shared", "Us", "Relationship & plans", [{ rows: usRows }]));
+    const bring = [];
+    for (const [key, items] of Object.entries(CHECKLIST)) {
+      const missing = items.filter(it => !state.checks[it.id]).map(it => it.label);
+      bring.push([key === "camden" ? "Camden" : "Denmark", missing.length ? "Still to gather:\n" + missing.join("\n") : "All gathered"]);
+    }
+    const bc = card("shared", "Bring", "Documents", [{ rows: bring }]); bc.classList.add("docs"); deck.appendChild(bc);
+  }
+
+  /* ---------- progress ---------- */
+  function countAnswered() {
+    let total = 0, done = 0;
+    for (const s of SECTIONS) for (const f of s.fields) {
+      const people = s.per === "person" ? ["lisa", "andreas"] : ["shared"];
+      for (const p of people) { total++; if (state[p][f.id] && String(state[p][f.id]).trim()) done++; }
+    }
+    return { total, done };
+  }
+  function refreshProgress() {
+    const { total, done } = countAnswered();
+    $("#count").textContent = done + " of " + total + " answered";
+    $("#bar").style.width = (total ? (100 * done / total) : 0) + "%";
+  }
+
+  /* ---------- persistence ---------- */
+  let saveTimer = null;
+  function onChange() {
+    saveLocal(); refreshProgress();
+    if (!$("#view-cards").hidden) buildCards();
+    if (docRef) {
+      setSync("saving");
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(pushRemote, 600);
+    }
+  }
+  async function pushRemote() {
+    try {
+      await docRef.set({ lisa: state.lisa, andreas: state.andreas, shared: state.shared, checks: state.checks, updatedAt: new Date().toISOString() });
+      setSync("shared");
+    } catch (e) { setSync("local"); }
+  }
+  function setSync(s) {
+    const el = $("#sync"); el.dataset.state = s;
+    el.textContent = s === "shared" ? "Shared between your phones" : s === "saving" ? "Saving…" : "Saved on this device only";
+  }
+
+  async function connect() {
+    if (!window.claude || typeof window.claude.use !== "function") return;
+    db = await window.claude.use("db");
+    if (!db) return;
+    docRef = db.doc("registration/answers");
+    docRef.onSnapshot(snap => {
+      if (snap.exists) {
+        const data = snap.data();
+        if (!snap.metadata.hasPendingWrites) { merge(data); saveLocal(); refreshFormValues(); refreshProgress(); if (!$("#view-cards").hidden) buildCards(); }
+      } else if (!remoteReady && countAnswered().done > 0) {
+        pushRemote(); // seed from whatever this device already has
+      }
+      remoteReady = true;
+      setSync("shared");
+    }, () => { docRef = null; setSync("local"); });
+  }
+
+  /* ---------- tabs ---------- */
+  function show(which) {
+    const form = which === "form";
+    $("#view-form").hidden = !form; $("#view-cards").hidden = form;
+    $("#tab-form").setAttribute("aria-selected", form); $("#tab-cards").setAttribute("aria-selected", !form);
+    $("#quiz-wrap").hidden = form; $("#print").hidden = form;
+    if (!form) buildCards();
+    try { localStorage.setItem(LS_KEY + ":tab", which); } catch (e) {}
+  }
+  $("#tab-form").addEventListener("click", () => show("form"));
+  $("#tab-cards").addEventListener("click", () => show("cards"));
+  $("#quiz").addEventListener("change", e => {
+    $("#deck").dataset.quiz = e.target.checked ? "on" : "off";
+    $("#quiz-tip").hidden = !e.target.checked;
+    if (!e.target.checked) document.querySelectorAll(".kv .v.shown").forEach(v => v.classList.remove("shown"));
+  });
+  $("#print").addEventListener("click", () => window.print());
+
+  /* ---------- boot ---------- */
+  function start(hot) {
+    loadLocal();
+    if (hot && hot.state) merge(hot.state);
+    buildForm(); refreshProgress();
+    let tab = "form";
+    try { tab = localStorage.getItem(LS_KEY + ":tab") || "form"; } catch (e) {}
+    if (hot && hot.tab) tab = hot.tab;
+    show(tab);
+    connect();
+  }
+  if (window.claude && window.claude.hot && typeof window.claude.hot.snapshot === "function") {
+    window.claude.hot.snapshot(() => ({ state, tab: $("#view-cards").hidden ? "form" : "cards" }));
+  }
+  if (window.claude && window.claude.hot && typeof window.claude.hot.ready === "function") window.claude.hot.ready(start);
+  else start((window.claude && window.claude.hot && window.claude.hot.data) || {});
+})();
+</script>
