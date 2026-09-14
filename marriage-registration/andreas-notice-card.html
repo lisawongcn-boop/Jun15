@@ -146,6 +146,14 @@
   .switch input:checked + span.track { background: var(--wax); }
   .switch input:checked + span.track::after { left: 19px; }
 
+  .toast { margin: 10px 0 0; font-size: 14px; color: var(--ink-2); }
+  .toast[hidden] { display: none; }
+  .copybox { margin: 14px 0 0; padding: 14px 16px; border: 1px solid var(--line-strong); border-radius: 10px; background: var(--panel); font-size: 14px; color: var(--ink-2); }
+  .copybox[hidden] { display: none; }
+  .copybox p { margin: 0 0 8px; }
+  .copybox b { color: var(--ink); }
+  .copybox textarea { width: 100%; font-family: var(--mono); font-size: 12px; color: var(--ink); background: var(--panel-2); border: 1px solid var(--line); border-radius: 6px; padding: 8px; margin-bottom: 8px; }
+
   /* ---------- notes strip ---------- */
   .notes {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px;
@@ -228,6 +236,9 @@
   .card[data-person="andreas"] { --hue: var(--andreas); --hue-soft: var(--andreas-soft); }
   .card[data-person="shared"] { --hue: var(--us); --hue-soft: var(--us-soft); }
   .card[data-person="me"] { --hue: var(--me); --hue-soft: var(--me-soft); }
+  .card[data-person="guest"] { --hue: var(--lisa); --hue-soft: var(--lisa-soft); border-style: dashed; }
+  .deck-break { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 12px; padding-top: 14px; border-top: 1px solid var(--line-strong); }
+  .deck-break h3 { margin: 0; font-family: var(--display); font-weight: 600; font-size: 20px; font-variation-settings: "opsz" 48; }
   .card-head {
     background: var(--hue-soft); color: var(--hue);
     padding: 14px 18px 12px;
@@ -252,6 +263,7 @@
   .deck[data-quiz="on"] .kv .v:not(.empty):not(.shown):hover { text-shadow: 0 0 7px var(--ink); }
   .quiz-tip { font-size: 14px; color: var(--ink-2); margin: 16px 0 0; }
   .quiz-tip[hidden] { display: none; }
+  @media print { .deck-break .btn { display: none; } }
   .empty-deck { margin: 32px 0; padding: 22px; border: 1px dashed var(--line-strong); border-radius: 12px; color: var(--ink-2); font-size: 15px; max-width: 60ch; }
   .empty-deck b { color: var(--ink); }
 
@@ -287,7 +299,16 @@
       <span class="sync" id="sync" data-state="local">Saved on this device</span>
       <label class="switch" id="quiz-wrap" hidden><input type="checkbox" id="quiz"><span class="track"></span>Quiz me</label>
       <button class="btn" id="print" hidden>Print cards</button>
+      <button class="btn" id="export">Export .json</button>
+      <button class="btn" id="import">Import .json</button>
+      <input type="file" id="import-file" accept=".json,application/json" hidden>
     </div>
+  </div>
+  <p class="toast" id="toast" hidden></p>
+  <div class="copybox" id="copybox" hidden>
+    <p>Saving files is not available in this view. Copy the text below into a file named <b id="copyname"></b> instead, or send it to the other person as a message.</p>
+    <textarea id="copytext" readonly rows="6" aria-label="Exported answers"></textarea>
+    <div><button class="btn" id="copybtn">Copy to clipboard</button> <button class="btn" id="copyclose">Close</button></div>
   </div>
 
   <section class="notes">
@@ -304,7 +325,7 @@
     <div class="deck" id="deck" data-quiz="off"></div>
   </div>
 
-  <p class="foot">Your answers are kept in a private store attached to this page, so you can open it on your phone and laptop. Passport numbers are here because the forms ask for them. Keep the link to yourself.</p>
+  <p class="foot">Your answers are kept in a private store attached to this page, so you can open it on your phone and laptop. Use <b>Export .json</b> to send your answers to Lisa, and <b>Import .json</b> to load theirs onto your device for practice. Passport numbers are in these files, so share them only with each other.</p>
 </div>
 
 <script>
@@ -419,7 +440,7 @@
   const $ = (s, el) => (el || document).querySelector(s);
   const ce = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
 
-  let state = { me: {}, checks: {} };
+  let state = { me: {}, checks: {}, guest: null };
   let db = null, docRef = null, remoteReady = false, applyingRemote = false;
   const LS_KEY = "notice-card-" + KEY + "-v1";
 
@@ -432,6 +453,8 @@
     for (const k of ["me", "checks"]) {
       if (obj[k] && typeof obj[k] === "object") state[k] = Object.assign({}, state[k], obj[k]);
     }
+    if (obj.guest && typeof obj.guest === "object" && obj.guest.answers) state.guest = obj.guest;
+    else if (obj.guest === null) state.guest = null;
   }
 
   /* ---------- form ---------- */
@@ -548,12 +571,13 @@
     nameAfter: "Names after", children: "Children", language: "Interpreter", sanFrancisco: "San Francisco"
   };
   const sec = k => SECTIONS.find(s => s.key === k);
-  const rows = (s, p) => s.fields.filter(f => state[p][f.id]).map(f => [short[f.id] || f.label, state[p][f.id]]);
+  const rowsFrom = (s, src) => s.fields.filter(f => src[f.id]).map(f => [short[f.id] || f.label, src[f.id]]);
+  const rows = (s, p) => rowsFrom(s, state[p]);
 
   function buildCards() {
     const deck = $("#deck"); deck.innerHTML = "";
     const answered = countAnswered();
-    if (answered.done === 0) {
+    if (answered.done === 0 && !state.guest) {
       const e = ce("div", "empty-deck");
       e.innerHTML = "Nothing to remember yet. Go back to <b>Fill in</b> and start with your name and date of birth. The cards build themselves from whatever you have answered.";
       deck.appendChild(e);
@@ -579,6 +603,29 @@
       bring.push(["Camden", missing.length ? "Still to gather:\n" + missing.join("\n") : "All gathered"]);
     }
     const bc = card("shared", "Bring", "Documents", [{ rows: bring }]); bc.classList.add("docs"); deck.appendChild(bc);
+    if (state.guest && state.guest.answers) {
+      const g = state.guest, a = g.answers, who = g.person;
+      const hdr = ce("div", "deck-break");
+      hdr.appendChild(ce("h3", null, who + "'s answers, for practice"));
+      const rm = ce("button", "btn", "Remove"); rm.type = "button";
+      rm.addEventListener("click", () => { if (confirm("Remove " + who + "'s practice deck from this page?")) { state.guest = null; onChange(); buildCards(); } });
+      hdr.appendChild(rm);
+      deck.appendChild(hdr);
+      const gp = [
+        { rows: rowsFrom(sec("identity"), a) },
+        { title: "Contact", rows: rowsFrom(sec("contact"), a) },
+        { title: "Work", rows: rowsFrom(sec("work"), a) },
+        { title: "Residence", rows: rowsFrom(sec("status"), a) }
+      ].filter(x => x.rows.length);
+      if (gp.length) deck.appendChild(card("guest", who, "Personal", gp));
+      const gf = [
+        { title: "Mother", rows: rowsFrom(sec("mother"), a) },
+        { title: "Father", rows: rowsFrom(sec("father"), a) }
+      ].filter(x => x.rows.length);
+      if (gf.length) deck.appendChild(card("guest", who + "'s parents", "Family", gf));
+      const gu = rowsFrom(sec("us"), a);
+      if (gu.length) deck.appendChild(card("guest", "Us", who + "'s answers", [{ rows: gu }]));
+    }
   }
 
   /* ---------- progress ---------- */
@@ -608,7 +655,7 @@
   }
   async function pushRemote() {
     try {
-      await docRef.set({ me: state.me, checks: state.checks, updatedAt: new Date().toISOString() });
+      await docRef.set({ me: state.me, checks: state.checks, guest: state.guest, updatedAt: new Date().toISOString() });
       setSync("shared");
     } catch (e) { setSync("local"); }
   }
@@ -633,6 +680,77 @@
       setSync("shared");
     }, () => { docRef = null; setSync("local"); });
   }
+
+  /* ---------- export / import ---------- */
+  function toast(msg) {
+    const t = $("#toast"); t.textContent = msg; t.hidden = false;
+    clearTimeout(toast.timer); toast.timer = setTimeout(() => { t.hidden = true; }, 6000);
+  }
+  function exportPayload() {
+    return {
+      app: "notice-card", version: 1, person: ME, exportedAt: new Date().toISOString(),
+      answers: state.me, checks: state.checks
+    };
+  }
+  function exportFilename() {
+    const d = new Date().toISOString().slice(0, 10);
+    return ME.toLowerCase() + "-notice-answers-" + d + ".json";
+  }
+  async function doExport() {
+    const text = JSON.stringify(exportPayload(), null, 2);
+    const filename = exportFilename();
+    let dl = null;
+    try { if (window.claude && typeof window.claude.use === "function") dl = await window.claude.use("downloads"); } catch (e) {}
+    if (dl) {
+      try { await dl.save({ filename, data: text }); toast("Saved " + filename + ". Send it to Lisa."); return; }
+      catch (e) { if (e && e.code === "declined") { toast("Export cancelled."); return; } }
+    } else {
+      try {
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(new Blob([text], { type: "application/json" }));
+        a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+        toast("Downloaded " + filename + ". If nothing appeared, use the text box below.");
+      } catch (e) {}
+    }
+    $("#copyname").textContent = filename; $("#copytext").value = text; $("#copybox").hidden = false;
+  }
+  function applyImport(text) {
+    let obj;
+    try { obj = JSON.parse(text); } catch (e) { toast("That file is not valid JSON."); return; }
+    if (!obj || typeof obj !== "object") { toast("That file does not contain answers."); return; }
+    const answers = obj.answers || obj.me;
+    if (!answers || typeof answers !== "object") { toast("That file does not contain answers."); return; }
+    const from = obj.person ? String(obj.person) : "someone";
+    if (from !== ME) {
+      state.guest = { person: from, answers: Object.assign({}, answers), importedAt: obj.exportedAt || new Date().toISOString() };
+      onChange(); show("cards");
+      toast("Loaded " + from + "'s answers as a practice deck. Your own answers are untouched.");
+      return;
+    }
+    if (countAnswered().done > 0 && !confirm("Replace your current answers with the ones in this file?")) return;
+    state.me = Object.assign({}, answers);
+    state.checks = (obj.checks && typeof obj.checks === "object") ? Object.assign({}, obj.checks) : {};
+    refreshFormValues(); onChange();
+    const n = countAnswered();
+    toast("Loaded your answers: " + n.done + " of " + n.total + " filled in.");
+  }
+  $("#export").addEventListener("click", doExport);
+  $("#import").addEventListener("click", () => $("#import-file").click());
+  $("#import-file").addEventListener("change", e => {
+    const f = e.target.files && e.target.files[0]; if (!f) return;
+    const r = new FileReader();
+    r.onload = () => applyImport(String(r.result || ""));
+    r.onerror = () => toast("Could not read that file.");
+    r.readAsText(f);
+    e.target.value = "";
+  });
+  $("#copybtn").addEventListener("click", async () => {
+    const ta = $("#copytext");
+    try { await navigator.clipboard.writeText(ta.value); toast("Copied."); }
+    catch (e) { ta.focus(); ta.select(); toast("Press Ctrl+C or Cmd+C to copy."); }
+  });
+  $("#copyclose").addEventListener("click", () => { $("#copybox").hidden = true; });
 
   /* ---------- tabs ---------- */
   function show(which) {
