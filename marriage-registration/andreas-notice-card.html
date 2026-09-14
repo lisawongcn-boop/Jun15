@@ -158,7 +158,6 @@
   }
   .note h3 { margin: 0 0 4px; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink); font-weight: 600; }
   .note.camden { border-color: var(--me); }
-  .note.denmark { border-color: var(--wax); }
   .note p { margin: 0; }
   .note p + p { margin-top: 4px; }
 
@@ -272,7 +271,7 @@
 <div class="wrap">
   <header class="mast">
     <div>
-      <p class="eyebrow">Notice of marriage · Camden Town Hall & Denmark</p>
+      <p class="eyebrow">Notice of marriage · Camden Town Hall</p>
       <h1>Andreas<em>'s</em> card</h1>
     </div>
     <p class="meta">This page is yours alone. Fill in the form, then switch to <b>Memory cards</b>. Lisa has a separate page, so nothing here gets mixed up with theirs.</p>
@@ -294,12 +293,7 @@
   <section class="notes">
     <div class="note camden">
       <h3>Camden Town Hall · giving notice</h3>
-      <p>You are usually interviewed on your own. Bring your passport and proof of address dated within the last 3 months. Notice is displayed for 28 full days, so the earliest ceremony is on day 29. If you are not a British or Irish citizen, or an EU citizen with settled status, bring your visa or share code; the notice may be referred and the wait can extend to 70 days.</p>
-    </div>
-    <div class="note denmark">
-      <h3>Denmark · Familieretshuset</h3>
-      <p>The application goes to the Agency of Family Law before you travel. Once the certificate is issued it is valid for 4 months, and you marry at the chosen Danish town hall. Non-EU citizens also show proof of legal residence in the UK.</p>
-      <p>Check the exact rules with each office. These notes are a reminder, not the rulebook.</p>
+      <p>You are usually interviewed on your own, and the registrar asks the questions below out loud. Bring your passport and proof of address dated within the last 3 months. Notice is displayed for 28 full days, so the earliest ceremony is on day 29. If you are not a British or Irish citizen, or an EU citizen with settled status, bring your visa or share code; the notice may be referred and the wait can extend to 70 days. Check the exact rules with Camden; these notes are a reminder, not the rulebook.</p>
     </div>
   </section>
 
@@ -319,7 +313,7 @@
   "use strict";
 
   /* ------------------------------------------------------------------
-     Question set. `asked`: c = Camden notice appointment, d = Denmark
+     Question set. `asked`: all asked at the Camden notice appointment
      application. Sections marked per: "person" render a Lisa and an
      Andreas column; "shared" renders one wide answer.
   ------------------------------------------------------------------ */
@@ -363,7 +357,7 @@
     },
     {
       key: "status", title: "Immigration & residence", per: "person",
-      blurb: "Asked of anyone who is not a British or Irish citizen. Denmark also needs proof of legal stay in the UK.",
+      blurb: "Only if you are not a British or Irish citizen, or an EU citizen with settled status. Leave blank otherwise.",
       fields: [
         { id: "immStatus", label: "UK immigration status", hint: "Visa type or settled status, plus BRP / share-code if you have one.", asked: "cd" },
         { id: "ukEntry", label: "Date you first came to the UK", asked: "c" },
@@ -372,7 +366,7 @@
     },
     {
       key: "mother", title: "Mother", per: "person",
-      blurb: "Both of your parents go on the UK certificate with their occupations. Denmark asks for names too.",
+      blurb: "Both of your parents go on the UK certificate with their names and occupations. Birth dates and addresses are extra, in case you are asked.",
       fields: [
         { id: "mName", label: "Mother's full name", hint: "Include her maiden surname.", asked: "cd" },
         { id: "mDob", label: "Mother's date of birth", asked: "d", type: "date" },
@@ -400,8 +394,7 @@
         { id: "livingTogetherSince", label: "Living together since", hint: "And at which address.", asked: "c" },
         { id: "engaged", label: "When and where you got engaged", asked: "c" },
         { id: "partnerFacts", label: "About Lisa, from memory", hint: "Full name, birthday, birthplace, job, parents' names and what they do, siblings.", asked: "c", type: "textarea" },
-        { id: "camdenPlan", label: "Camden ceremony plan", hint: "Venue, intended date, ceremony type.", asked: "c" },
-        { id: "denmarkPlan", label: "Denmark plan", hint: "Which town hall, travel dates, application reference.", asked: "d" },
+        { id: "camdenPlan", label: "Ceremony plan", hint: "Venue, intended date, ceremony type.", asked: "c" },
         { id: "witnesses", label: "Witnesses", hint: "Two adults. Names and how you know them.", asked: "cd" },
         { id: "nameAfter", label: "Surnames after marriage", hint: "Keeping, changing, or double-barrelling.", asked: "cd" },
         { id: "children", label: "Children", hint: "Either of you, from any relationship. 'None' is an answer.", asked: "cd" },
@@ -419,13 +412,6 @@
       { id: "c_decree", label: "Decree absolute or death certificate", sub: "Only if previously married" },
       { id: "c_namechange", label: "Deed poll or name-change paperwork", sub: "Only if names differ across documents" },
       { id: "c_fee", label: "Notice fee, per person", sub: "Payable at the appointment" }
-    ],
-    denmark: [
-      { id: "d_passport", label: "Your passport scan", sub: "Colour, every page with a stamp" },
-      { id: "d_residence", label: "Proof of legal residence in the UK", sub: "Visa, BRP or settled status; not needed for EU citizens" },
-      { id: "d_status", label: "Proof of marital status", sub: "Divorce decree or death certificate if applicable" },
-      { id: "d_fee", label: "Familieretshuset application fee", sub: "Paid online with the application" },
-      { id: "d_booking", label: "Town hall date confirmed", sub: "Plus travel and hotel booked" }
     ]
   };
 
@@ -469,13 +455,6 @@
     return wrap;
   }
 
-  function tags(asked) {
-    const t = ce("div", "tags");
-    if (asked.includes("c")) t.appendChild(ce("span", "tag c", "Camden"));
-    if (asked.includes("d")) t.appendChild(ce("span", "tag d", "Denmark"));
-    return t;
-  }
-
   function buildForm() {
     const root = $("#view-form"); root.innerHTML = "";
     for (const s of SECTIONS) {
@@ -491,7 +470,6 @@
         lab.htmlFor = "me-" + f.id;
         q.appendChild(lab);
         if (f.hint) q.appendChild(ce("small", null, f.hint));
-        q.appendChild(tags(f.asked));
         row.appendChild(q);
         row.appendChild(control(f, "me"));
         sec.appendChild(row);
@@ -502,12 +480,12 @@
     const sec = ce("section", "sec");
     const head = ce("div", "sec-head");
     head.appendChild(ce("h2", null, "What to bring"));
-    head.appendChild(ce("p", null, "Tick as you gather them. Originals for Camden, scans for Denmark."));
+    head.appendChild(ce("p", null, "Tick as you gather them. Originals only, no photocopies."));
     sec.appendChild(head);
     const grid = ce("div", "checks");
     for (const [key, items] of Object.entries(CHECKLIST)) {
       const col = ce("div");
-      col.appendChild(ce("h3", null, key === "camden" ? "Camden Town Hall" : "Denmark"));
+      col.appendChild(ce("h3", null, "Camden Town Hall"));
       for (const it of items) {
         const lab = ce("label");
         const cb = ce("input"); cb.type = "checkbox"; cb.id = "chk-" + it.id; cb.checked = !!state.checks[it.id];
@@ -566,7 +544,7 @@
     mName: "Name", mDob: "Born", mPob: "Birthplace", mAddress: "Address", mJob: "Occupation",
     fName: "Name", fDob: "Born", fPob: "Birthplace", fAddress: "Address", fJob: "Occupation",
     met: "How we met", togetherSince: "Together since", livingTogetherSince: "Cohabiting since", engaged: "Engaged",
-    partnerFacts: "Know by heart", camdenPlan: "Camden", denmarkPlan: "Denmark", witnesses: "Witnesses",
+    partnerFacts: "Know by heart", camdenPlan: "Ceremony", witnesses: "Witnesses",
     nameAfter: "Names after", children: "Children", language: "Interpreter", sanFrancisco: "San Francisco"
   };
   const sec = k => SECTIONS.find(s => s.key === k);
@@ -598,7 +576,7 @@
     const bring = [];
     for (const [key, items] of Object.entries(CHECKLIST)) {
       const missing = items.filter(it => !state.checks[it.id]).map(it => it.label);
-      bring.push([key === "camden" ? "Camden" : "Denmark", missing.length ? "Still to gather:\n" + missing.join("\n") : "All gathered"]);
+      bring.push(["Camden", missing.length ? "Still to gather:\n" + missing.join("\n") : "All gathered"]);
     }
     const bc = card("shared", "Bring", "Documents", [{ rows: bring }]); bc.classList.add("docs"); deck.appendChild(bc);
   }
