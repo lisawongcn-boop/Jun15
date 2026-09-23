@@ -47,10 +47,11 @@ Use any image app (ChatGPT, Gemini, Midjourney). Then upload each picture as the
 Use `andreas-reference.png` (his cartoon from the garlic game) as his reference picture. To make a matching character sheet:
 > Cute chibi cartoon character sheet of Andreas: a small round-headed young man with short brown hair and a little quiff sticking up on top, big thick black square glasses, rosy pink cheeks, peachy skin and a happy goofy smile. He wears a plain beige T-shirt, navy shorts and dark navy shoes, with short stubby arms and legs. Flat vector cartoon style with soft shading, soft lavender background, front view, plus happy/proud/guilty/sleepy expressions, no text.
 
-**Her (the singer)**
-> Cute chibi cartoon character sheet of a young woman with long dark hair in a messy bun, round glasses and a cosy mustard cardigan, holding a small acoustic guitar, with a deadpan but sweet expression. Flat vector cartoon style with soft shading, soft pastel colours, chibi style, plain white background, no text.
+**Her (the singer, Lisa)**
+Look: a mix of a 1930s cartoon sweetheart (Betty Boop) and a petite fairy-cartoon heroine (Bloom from Winx Club), made Asian and cute. No hoop earrings, no red or black lipstick. Image apps often block famous character names, so the prompt describes the look instead:
+> Cute cartoon character sheet of a petite, slender young East Asian woman with a small, delicate build and slim limbs. She has a round, heart-shaped face with big, glossy dark-brown almond-shaped eyes and long fluttery lashes, soft rosy cheeks, a tiny button nose and a small sweet smile with soft natural pink lips. Very long, straight, glossy black hair falls to her waist, with soft wispy bangs and a little curl at the ends. She wears a cropped mustard cardigan over a pastel top and a short flared skirt, and holds a small acoustic guitar. Expressions: sweet singing, deadpan side-eye, sympathetic, belting the big finish. Flat vector cartoon style with soft shading, pastel colours, plain lavender background, no earrings, no lipstick colour, no text.
 
-(Attach the Andreas picture to every clip he appears in: 3, 4, 5, 6 and 12. Change hair, glasses, clothes or the bag's colour to match the real people and the real bag.)
+(Attach Lisa's picture to clips 1, 2, 5, 6 and 11, and the Andreas picture to every clip he appears in: 3, 4, 5, 6 and 12. Change hair, glasses, clothes or the bag's colour to match the real people and the real bag.)
 
 ## Step 2: video clips (one per line, about 8 seconds, 9:16 vertical)
 
