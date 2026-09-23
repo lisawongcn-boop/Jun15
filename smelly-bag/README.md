@@ -43,13 +43,14 @@ Use any image app (ChatGPT, Gemini, Midjourney). Then upload each picture as the
 **Bag**
 > Cute kawaii cartoon character sheet of a small cream canvas tote bag with two olive-green handles, a tiny red heart patch on the front, huge sparkly round eyes, rosy pink cheeks and a tiny smile. Front, side and happy/sad/shocked expressions. Soft pastel colours, thick rounded outlines, chibi picture-book style, plain white background, no text.
 
-**Him**
-> Cute chibi cartoon character sheet of a cheerful, clueless young man in a navy running T-shirt, shorts and bright orange trainers, with messy hair, a big goofy grin and a thumbs-up pose. Soft pastel colours, thick rounded outlines, picture-book style, plain white background, no text.
+**Him (Andreas)**
+Best option: skip this prompt and use a screenshot of the Andreas cartoon from the "Andreas eats garlic" game as his reference picture. Otherwise:
+> Cute chibi cartoon character sheet of Andreas, a cheerful, clueless young man in a navy running T-shirt, shorts and bright orange trainers, with messy hair, a big goofy grin and a thumbs-up pose. Soft pastel colours, thick rounded outlines, picture-book style, plain white background, no text.
 
 **Her (the singer)**
 > Cute chibi cartoon character sheet of a young woman with long dark hair in a messy bun, round glasses and a cosy mustard cardigan, holding a small acoustic guitar, with a deadpan but sweet expression. Soft pastel colours, thick rounded outlines, picture-book style, plain white background, no text.
 
-(Change hair, glasses, clothes or the bag's colour to match the real people and the real bag.)
+(Attach the Andreas picture to every clip he appears in: 3, 4, 5, 6 and 12. Change hair, glasses, clothes or the bag's colour to match the real people and the real bag.)
 
 ## Step 2: video clips (one per line, about 8 seconds, 9:16 vertical)
 
