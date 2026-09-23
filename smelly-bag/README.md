@@ -1,7 +1,7 @@
 # Smelly Bag: cartoon video plan
 
 A cute, silly cartoon music video. Sung to the "Smelly Cat" tune (from *Friends*) with new "Smelly Bag" lyrics.
-Soundtrack: your own voice-memo recording. Visuals: short AI video clips, one per lyric line.
+Soundtrack: an AI-sung version from Suno (no need to record your voice). Visuals: short AI video clips, one per lyric line.
 Put it together in CapCut. Keep it private or share it on WhatsApp, because the tune is copyrighted.
 
 ## Lyrics (final)
@@ -72,9 +72,46 @@ Paste one prompt per clip and attach the matching character picture(s). Every pr
 12. **"...he's sleeping on the sofa"** - STYLE. Night at a cosy home. Andreas is curled up on a tiny sofa that is far too small for him, with a tiny blanket and the smelly sweatshirt as his pillow, and his little navy shoes sticking off the end, his glasses askew. Pan to the bedroom: the freshly washed, sparkling-clean bag is tucked into the big bed with a little sleep mask, smiling smugly.
 13. **Outro** - STYLE. Sunny morning. The clean bag hangs on a washing line, swaying happily in the breeze with its heart patch shining. A little bird lands on its handle, and they both smile. Soft bokeh sparkles.
 
-## Step 3: put it together (CapCut)
+## Step 3: the song (no recording needed)
 
-1. Record yourself singing on your phone (voice memo). Import that as the audio.
+In Suno (suno.com, free app), choose **Custom**, paste the lyrics below into *Lyrics*, and put this in *Style*:
+
+> cute playful acoustic folk, ukulele and acoustic guitar, whistling, light claps, sweet deadpan female vocal, quirky coffee-shop open mic, comedic, 100 bpm
+
+```
+[Intro]
+[Chorus]
+Smelly Bag, Smelly Bag, what did he do to you?
+Smelly Bag, Smelly Bag, it's not your fault.
+[Verse 1]
+He wedged you tight beneath his arm,
+And swore you'd come to no real harm,
+But he'd stuffed his sweatshirt in the middle,
+And now you smell like a warm gym riddle.
+[Chorus]
+Smelly Bag, Smelly Bag, what did he do to you?
+Smelly Bag, Smelly Bag, I blame the pit.
+[Verse 2]
+Phenomenal's the word he used,
+I'd go with "damp" and "slightly bruised",
+You used to smell of books and shopping,
+Now you smell like a bloke who's been jogging.
+[Verse 3]
+You've carried paperbacks and prose,
+And every charity find I chose,
+But one sweatshirt beneath his arm
+Undid a lifetime's bookish charm.
+[Final Chorus]
+Smelly Bag, Smelly Bag, what did he do to you?
+Smelly Bag, Smelly Bag, he's sleeping on the sofa.
+[Outro]
+```
+
+Suno gives you two versions each time, so pick the cutest. It writes its own tune, so it won't sound like "Smelly Cat". If you want the actual "Smelly Cat" tune, skip Suno: use a soft ukulele track from CapCut's music library, and anyone who knows the song will sing the captions along to it.
+
+## Step 4: put it together (CapCut)
+
+1. Import the Suno song as the audio.
 2. Drop the clips in order and trim each one to its line.
 3. Add the lyrics as captions (Text → Auto captions, or type them). Use a round, bubbly font in white with a pastel outline.
 4. Add a title card, "SMELLY BAG 🎒💨", and an end card, "The End (he's still on the sofa)".
