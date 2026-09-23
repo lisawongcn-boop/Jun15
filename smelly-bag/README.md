@@ -41,14 +41,14 @@ Smelly Bag, Smelly Bag, he's sleeping on the sofa.
 Use any image app (ChatGPT, Gemini, Midjourney). Then upload each picture as the "reference" or "start frame" in the video app, so the characters look the same in every clip.
 
 **Bag**
-> Cute kawaii cartoon character sheet of a small cream canvas tote bag with two olive-green handles, a tiny red heart patch on the front, huge sparkly round eyes, rosy pink cheeks and a tiny smile. Front, side and happy/sad/shocked expressions. Soft pastel colours, thick rounded outlines, chibi picture-book style, plain white background, no text.
+> Cute kawaii cartoon character sheet of a small cream canvas tote bag with two olive-green handles, a tiny red heart patch on the front, huge sparkly round eyes, rosy pink cheeks and a tiny smile. Front, side and happy/sad/shocked expressions. Flat vector cartoon style with soft shading, soft pastel colours, chibi style, plain white background, no text.
 
 **Him (Andreas)**
 Use `andreas-reference.png` (his cartoon from the garlic game) as his reference picture. To make a matching character sheet:
 > Cute chibi cartoon character sheet of Andreas: a small round-headed young man with short brown hair and a little quiff sticking up on top, big thick black square glasses, rosy pink cheeks, peachy skin and a happy goofy smile. He wears a plain beige T-shirt, navy shorts and dark navy shoes, with short stubby arms and legs. Flat vector cartoon style with soft shading, soft lavender background, front view, plus happy/proud/guilty/sleepy expressions, no text.
 
 **Her (the singer)**
-> Cute chibi cartoon character sheet of a young woman with long dark hair in a messy bun, round glasses and a cosy mustard cardigan, holding a small acoustic guitar, with a deadpan but sweet expression. Soft pastel colours, thick rounded outlines, picture-book style, plain white background, no text.
+> Cute chibi cartoon character sheet of a young woman with long dark hair in a messy bun, round glasses and a cosy mustard cardigan, holding a small acoustic guitar, with a deadpan but sweet expression. Flat vector cartoon style with soft shading, soft pastel colours, chibi style, plain white background, no text.
 
 (Attach the Andreas picture to every clip he appears in: 3, 4, 5, 6 and 12. Change hair, glasses, clothes or the bag's colour to match the real people and the real bag.)
 
@@ -56,7 +56,7 @@ Use `andreas-reference.png` (his cartoon from the garlic game) as his reference 
 
 Paste one prompt per clip and attach the matching character picture(s). Every prompt starts with the same style line, so the clips match:
 
-**STYLE:** *Cute kawaii 2D cartoon, pastel colours, thick rounded outlines, soft paper texture, bouncy squash-and-stretch animation, cosy and funny, 9:16 vertical, no text or words on screen.*
+**STYLE:** *Cute kawaii flat-vector 2D cartoon with soft shading and no heavy outlines (matching the Andreas reference), pastel colours with lavender accents, bouncy squash-and-stretch animation, cosy and funny, 9:16 vertical, no text or words on screen.*
 
 1. **Intro (instrumental)** - STYLE. A cosy little coffee-shop stage with fairy lights and a brick wall. The singer sits on a stool tuning her guitar. Next to her on a second stool, the cute cream tote bag with the red heart patch sits sadly, with wobbly pale-green stink lines floating up and one tiny cartoon fly doing loops above it. The camera slowly pushes in.
 2. **Chorus 1: "what did he do to you... it's not your fault"** - STYLE. The singer strums and sings sweetly to the bag. The bag's huge eyes fill with wobbly tears, and it sniffles. She gently pats its handle. Little pastel music notes float up and politely swerve around the green stink lines.
