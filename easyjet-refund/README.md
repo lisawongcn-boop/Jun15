@@ -23,15 +23,16 @@ Look at the baggage section for the 25 Sep flight.
 - One bag listed but two charges: money taken without a product. Screenshot it.
 - One bag and a different extra listed (seat, large cabin bag): note what it is before you write.
 
-## Step 2 – ask easyJet for the refund
+## Step 2 – refund requested (done)
 
-Fastest: easyJet Live Chat at https://www.easyjet.com/en/help-centre/contact/chat (the link their own agent gave you on 22 Sep). Have KD9N66D and both amounts ready.
+Email sent to customer.support@easyjet.com on 29 Sep 2026 asking for the duplicate charge back within 14 days. Full text in refund-request-email.md.
+Watch your inbox for a reply from Customer.Services@easyjet.com with a CRM number. Their last reply to you took 7 days.
 
-In writing: a Gmail draft is ready in your Drafts folder, addressed to customer.support@easyjet.com. Edit the one bracketed line, attach the two screenshots in this folder, and send. The same text is in refund-request-email.md.
+If they ask for proof: reply with the two bank screenshots in this folder.
+If they ask you to go through the agent: the bags were bought from and charged by easyJet directly, so this is easyJet's refund to make, not Gotogate's.
+Faster in parallel: easyJet Live Chat at https://www.easyjet.com/en/help-centre/contact/chat, quoting KD9N66D and both amounts.
 
-If they ask you to go through the agent: bag purchases were made directly with easyJet and charged by easyJet, so this is easyJet's refund to make, not Gotogate's.
-
-## Step 3 – if easyJet does not refund
+## Step 3 – if no refund by 13 Oct 2026
 
 Use "Query this transaction" in your banking app on the £39.49 charge (the pending £36.49 can only be disputed once it settles). Reason: duplicate charge for the same service. Give them the booking reference and the date you contacted easyJet.
 
